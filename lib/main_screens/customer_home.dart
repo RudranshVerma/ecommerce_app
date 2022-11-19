@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/main_screens/cart.dart';
 import 'package:ecommerce_app/main_screens/category.dart';
 import 'package:ecommerce_app/main_screens/home.dart';
+import 'package:ecommerce_app/main_screens/profile.dart';
 import 'package:ecommerce_app/main_screens/store.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +18,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     HomeScreen(),
     CategoryScreen(),
     StoresScreen(),
-    Center(child: Text('Cart screen')),
-    Center(child: Text('Profile screen')),
+    CartScreen(),
+    ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {

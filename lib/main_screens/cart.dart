@@ -84,7 +84,7 @@ class _CartScreenState extends State<CartScreen> {
         YellowButton(
           width: 0.45,
           label: 'CHECK OUT',
-          onpressed: () {},
+          onPressed: () {},
         )
       ]),
     );
