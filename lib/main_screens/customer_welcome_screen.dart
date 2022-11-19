@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../widgtes/yellow_button.dart';
@@ -9,7 +11,18 @@ class CustomerWelcomeScreen extends StatefulWidget {
   State<CustomerWelcomeScreen> createState() => _CustomerWelcomeScreenState();
 }
 
-class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
+class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _controller.repeat();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +86,17 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Image(
-                                  image: AssetImage('images/inapp/logo.jpg')),
+                              AnimatedBuilder(
+                                animation: _controller.view,
+                                builder: (context, child) {
+                                  return Transform.rotate(
+                                    angle: _controller.value * 2 * pi,
+                                    child: child,
+                                  );
+                                },
+                                child: const Image(
+                                    image: AssetImage('images/inapp/logo.jpg')),
+                              ),
                               YellowButton(
                                 label: 'Log In',
                                 width: 0.25,
