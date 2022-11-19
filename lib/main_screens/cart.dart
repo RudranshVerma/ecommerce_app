@@ -2,6 +2,8 @@ import 'package:ecommerce_app/main_screens/customer_home.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 
+import '../widgtes/yellow_button.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
@@ -79,15 +81,10 @@ class _CartScreenState extends State<CartScreen> {
             ],
           ),
         ),
-        Container(
-          height: 35,
-          width: MediaQuery.of(context).size.width * 0.45,
-          decoration: BoxDecoration(
-              color: Colors.yellow, borderRadius: BorderRadius.circular(25)),
-          child: MaterialButton(
-            onPressed: () {},
-            child: const Text('CHECKOUT'),
-          ),
+        YellowButton(
+          width: 0.45,
+          label: 'CHECK OUT',
+          onpressed: () {},
         )
       ]),
     );
