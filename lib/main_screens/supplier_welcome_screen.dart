@@ -1,6 +1,4 @@
-import 'package:ecommerce_app/main_screens/dashboard.dart';
 import 'package:flutter/material.dart';
-
 import '../widgtes/yellow_button.dart';
 
 class SupplierWelcomeScreen extends StatefulWidget {
@@ -119,9 +117,7 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen> {
                           GoogleFacebookLogin(
                               label: 'GUEST',
                               onPressed: () {},
-                              child:
-                                  // const Image(image: AssetImage('images/inapp/guest.jpg')),
-                                  const Icon(
+                              child: const Icon(
                                 Icons.person,
                                 size: 55,
                                 color: Colors.lightBlueAccent,
