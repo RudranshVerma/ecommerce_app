@@ -15,8 +15,8 @@ import 'package:ecommerce_app/utilities/categ_list.dart';
 //   'jackets',
 // ];
 
-class WomenCategory extends StatelessWidget {
-  const WomenCategory({super.key});
+class ShoesCategory extends StatelessWidget {
+  const ShoesCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class WomenCategory extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CategHeaderLabel(
-                    headerLabel: 'Women',
+                    headerLabel: 'Shoes',
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.68,
@@ -42,12 +42,12 @@ class WomenCategory extends StatelessWidget {
                       mainAxisSpacing: 70,
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(women.length, (index) {
+                      children: List.generate(shoes.length, (index) {
                         return SubCategModel(
-                          mainCategName: 'women',
-                          subCategName: women[index],
-                          assetName: 'images/women/women$index.jpg',
-                          subcateglabel: women[index],
+                          mainCategName: 'shoes',
+                          subCategName: shoes[index],
+                          assetName: 'images/shoes/shoes$index.jpg',
+                          subcateglabel: shoes[index],
                         );
                       }),
                     ),
@@ -56,15 +56,11 @@ class WomenCategory extends StatelessWidget {
               ),
             ),
           ),
-          const Positioned(
-            bottom: 0,
-            right: 0,
-            child: SliderBar(
-              maincategName: 'women',
-            ),
-          ),
+         const Positioned(bottom: 0, right: 0, child: SliderBar(maincategName: 'shoes',),),
         ],
       ),
     );
   }
 }
+
+

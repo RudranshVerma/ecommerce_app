@@ -15,8 +15,8 @@ import 'package:ecommerce_app/utilities/categ_list.dart';
 //   'jackets',
 // ];
 
-class WomenCategory extends StatelessWidget {
-  const WomenCategory({super.key});
+class ElectronicsCategory extends StatelessWidget {
+  const ElectronicsCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class WomenCategory extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CategHeaderLabel(
-                    headerLabel: 'Women',
+                    headerLabel: 'Electronics',
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.68,
@@ -42,12 +42,12 @@ class WomenCategory extends StatelessWidget {
                       mainAxisSpacing: 70,
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(women.length, (index) {
+                      children: List.generate(electronics.length, (index) {
                         return SubCategModel(
-                          mainCategName: 'women',
-                          subCategName: women[index],
-                          assetName: 'images/women/women$index.jpg',
-                          subcateglabel: women[index],
+                          mainCategName: 'electronics',
+                          subCategName: electronics[index],
+                          assetName: 'images/electronics/electronics$index.jpg',
+                          subcateglabel: electronics[index],
                         );
                       }),
                     ),
@@ -60,7 +60,7 @@ class WomenCategory extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: SliderBar(
-              maincategName: 'women',
+              maincategName: 'electronics',
             ),
           ),
         ],
