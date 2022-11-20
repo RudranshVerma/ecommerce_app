@@ -1,11 +1,13 @@
 import 'dart:math';
-
+import 'dart:html';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 import '../widgtes/yellow_button.dart';
+import 'package:ecommerce_app/main_screens/welcomescreen.dart';
 
 class CustomerWelcomeScreen extends StatefulWidget {
-  const CustomerWelcomeScreen({super.key});
+  const CustomerWelcomeScreen({Key? key}) : super(key: key);
 
   @override
   State<CustomerWelcomeScreen> createState() => _CustomerWelcomeScreenState();
@@ -36,9 +38,78 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                const Text(
-                  'WELCOME',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 55),
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          ColorizeAnimatedText('WELCOME',
+                              textStyle: const TextStyle(
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Acme'),
+                              colors: [
+                                Colors.yellowAccent,
+                                Colors.red,
+                                Colors.blueAccent,
+                                Colors.green,
+                                Colors.purple,
+                                Colors.teal,
+                              ]),
+                        ],
+                        isRepeatingAnimation: true,
+                        repeatForever: true,
+                      ),
+                    ),
+                  ],
+                ),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    ColorizeAnimatedText('TO',
+                        textStyle: const TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Acme'),
+                        colors: [
+                          Colors.yellowAccent,
+                          Colors.red,
+                          Colors.blueAccent,
+                          Colors.green,
+                          Colors.purple,
+                          Colors.teal,
+                        ]),
+                  ],
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                ),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    ColorizeAnimatedText('LOCAL MARKET',
+                        textStyle: const TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Acme'),
+                        colors: [
+                          Colors.yellowAccent,
+                          Colors.red,
+                          Colors.blueAccent,
+                          Colors.green,
+                          Colors.purple,
+                          Colors.teal,
+                        ]),
+                  ],
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
                 ),
                 const SizedBox(
                   height: 120,
@@ -100,7 +171,10 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                               YellowButton(
                                 label: 'Log In',
                                 width: 0.25,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/customer_home');
+                                },
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 8),

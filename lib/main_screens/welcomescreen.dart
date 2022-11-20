@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/main_screens/dashboard.dart';
 import 'package:ecommerce_app/main_screens/supplier_welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -43,11 +44,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     padding: const EdgeInsets.all(25.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CustomerWelcomeScreen()));
+                        Navigator.pushReplacementNamed(
+                            context, '/customerwelcomescreen');
                       },
                       child: const Text('Customer',
                           style: TextStyle(
@@ -60,11 +58,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const SupplierWelcomeScreen()));
+                      Navigator.pushReplacementNamed(
+                          context, '/supplierwelcomescreen');
                     },
                     child: const Text('Vendor',
                         style: TextStyle(

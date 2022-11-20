@@ -206,7 +206,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 RepeatedListTile(
                                   title: 'Log out',
                                   icon: Icons.logout,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/customerwelcomescreen');
+                                  },
                                 ),
                               ]),
                             ),

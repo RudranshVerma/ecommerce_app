@@ -37,7 +37,9 @@ class DashboardScreen extends StatelessWidget {
               Icons.logout,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/supplierwelcomescreen');
+            },
           )
         ],
       ),

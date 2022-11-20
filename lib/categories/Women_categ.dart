@@ -46,7 +46,7 @@ class WomenCategory extends StatelessWidget {
                         return SubCategModel(
                           mainCategName: 'women',
                           subCategName: women[index],
-                          assetName: 'images/women/women$index.jpg',
+                          assetName: 'images/women/woman$index.jpg',
                           subcateglabel: women[index],
                         );
                       }),
