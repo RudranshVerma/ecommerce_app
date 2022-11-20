@@ -11,15 +11,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade300,
-        body: Stack(
-          
-          children: [
-            Container(
-              height: 230,
-              decoration: const BoxDecoration(gradient: LinearGradient(
-                              colors: [Colors.yellow, Colors.brown])),),
-         CustomScrollView(
+      backgroundColor: Colors.grey.shade300,
+      body: Stack(
+        children: [
+          Container(
+            height: 230,
+            decoration: const BoxDecoration(
+                gradient:
+                    LinearGradient(colors: [Colors.yellow, Colors.brown])),
+          ),
+          CustomScrollView(
             slivers: [
               SliverAppBar(
                 centerTitle: true,
@@ -31,7 +32,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return FlexibleSpaceBar(
                     title: AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
-                      opacity: constraints.biggest.height <= 120 ? 1 : 0, // account can disappear and reappear with opacity on scrolling
+                      opacity: constraints.biggest.height <= 120
+                          ? 1
+                          : 0, // account can disappear and reappear with opacity on scrolling
                       child: const Text(
                         'Account',
                         style: TextStyle(color: Colors.black),
@@ -41,20 +44,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       decoration: const BoxDecoration(
                           gradient: LinearGradient(
                               colors: [Colors.yellow, Colors.brown])),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 25,left: 30),
-                                child: Row(
-                                  children: [
-                                 const CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: AssetImage('images/inapp/guest.jpg'),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left:25),
-                                    child: Text('guest'.toUpperCase(),style: const TextStyle(color:Colors.black,fontSize: 24,fontWeight: FontWeight.w600),),
-                                  )
-                                ],),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 25, left: 30),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage('images/inapp/guest.jpg'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25),
+                              child: Text(
+                                'guest'.toUpperCase(),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600),
                               ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 }),
@@ -80,7 +91,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: TextButton(
                               child: SizedBox(
                                   height: 40,
-                                  width: MediaQuery.of(context).size.width * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
                                   child: const Center(
                                     child: Text(
                                       'Cart',
@@ -96,7 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: TextButton(
                               child: SizedBox(
                                   height: 40,
-                                  width: MediaQuery.of(context).size.width * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
                                   child: const Center(
                                     child: Text(
                                       'Orders',
@@ -116,7 +129,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: TextButton(
                               child: SizedBox(
                                   height: 40,
-                                  width: MediaQuery.of(context).size.width * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
                                   child: const Center(
                                     child: Text(
                                       'Wishlist',
@@ -140,78 +154,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               image: AssetImage('images/inapp/logo.jpg'),
                             ),
                           ),
-                        
-                      const ProfileHeaderLabel(headerlabel: 'Account Info'),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          height: 260,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Column(children:const  [
-                            RepeatedListTile(
-                              icon: Icons.email,
-                                subtitle: 'example@email.com',
-                                 title: 'Email Address'
-                                 ),
-                             YellowDivider(),
-                             RepeatedListTile(
-                              icon: Icons.phone,
-                                subtitle: '+91',
-                                 title: 'Phone No'
-                                 ),
-                            YellowDivider(),
-                             RepeatedListTile(
-                              icon: Icons.location_pin,
-                                subtitle: '23-R Nehru Place,New Delhi',
-                                 title: 'Address'
+                          const ProfileHeaderLabel(headerlabel: 'Account Info'),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: 260,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(children: const [
+                                RepeatedListTile(
+                                    icon: Icons.email,
+                                    subtitle: 'example@email.com',
+                                    title: 'Email Address'),
+                                YellowDivider(),
+                                RepeatedListTile(
+                                    icon: Icons.phone,
+                                    subtitle: '+91',
+                                    title: 'Phone No'),
+                                YellowDivider(),
+                                RepeatedListTile(
+                                    icon: Icons.location_pin,
+                                    subtitle: '23-R Nehru Place,New Delhi',
+                                    title: 'Address'),
+                              ]),
                             ),
-                          ]),
-                        ),
+                          ),
+                          const ProfileHeaderLabel(
+                              headerlabel: 'Account Settings'),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: 260,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(children: [
+                                RepeatedListTile(
+                                  title: 'Edit Profile',
+                                  subtitle: '',
+                                  icon: Icons.edit,
+                                  onPressed: () {},
+                                ),
+                                const YellowDivider(),
+                                RepeatedListTile(
+                                  title: 'Change Password',
+                                  icon: Icons.edit,
+                                  onPressed: () {},
+                                ),
+                                const YellowDivider(),
+                                RepeatedListTile(
+                                  title: 'Log out',
+                                  icon: Icons.logout,
+                                  onPressed: () {},
+                                ),
+                              ]),
+                            ),
+                          )
+                        ],
                       ),
-                      const ProfileHeaderLabel(headerlabel: 'Account Settings'),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          height: 260,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Column(children: [
-                            RepeatedListTile(
-                              title: 'Edit Profile',
-                              subtitle: '',
-                              icon: Icons.edit,
-                              onPressed: (){},
-
-                            ),
-                           const YellowDivider(),
-                            RepeatedListTile(
-                              title: 'Change Password',
-                              icon: Icons.edit,
-                              onPressed: (){},
-
-                            ),
-                            const YellowDivider(),
-                            RepeatedListTile(
-                              title: 'Log out',
-                              icon: Icons.logout,
-                              onPressed: (){},
-                            ),
-                          ]),
-                        ),
-                      )
-                  ],
-                ),
                     ),
-                ],
+                  ],
                 ),
               )
             ],
-          ),],
-        ),
-        );
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -240,16 +250,16 @@ class RepeatedListTile extends StatelessWidget {
   const RepeatedListTile({
     Key? key,
     required this.icon,
-     this.onPressed, 
-     this.subtitle='',
-     required this.title,
+    this.onPressed,
+    this.subtitle = '',
+    required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child:  ListTile(
+      child: ListTile(
         title: Text(title),
         subtitle: Text(subtitle),
         leading: Icon(icon),

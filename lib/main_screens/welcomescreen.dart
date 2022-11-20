@@ -56,24 +56,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               fontSize: 30,
                               fontWeight: FontWeight.bold)),
                     )),
-                // Padding(
-                //   padding: const EdgeInsets.all(20.0),
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //               builder: (context) =>
-                //                   const SupplierWelcomeScreen()));
-                //     },
-                //     child: const Text('Vendor',
-                //         style: TextStyle(
-                //             color: Colors.white,
-                //             decoration: TextDecoration.underline,
-                //             fontSize: 30,
-                //             fontWeight: FontWeight.bold)),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SupplierWelcomeScreen()));
+                    },
+                    child: const Text('Vendor',
+                        style: TextStyle(
+                            color: Colors.white,
+                            decoration: TextDecoration.underline,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ),
               ],
             ),
           ],
