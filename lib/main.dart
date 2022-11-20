@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'main_screens/customer_home.dart';
 import 'main_screens/customer_welcome_screen.dart';
