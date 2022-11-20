@@ -67,10 +67,12 @@ flutter:
     - images/shoes/
     - images/electronics/
     - images/beauty/
-    - images/kids/
+    - images/beauty/
     - images/homegarden/
     - images/accessories/
     - images/bags/
+    - images/inapp/
+    # - images/try
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
