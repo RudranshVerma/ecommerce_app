@@ -46,8 +46,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/welcomescreen');
+                        Navigator.popAndPushNamed(context, '/welcomescreen');
                       },
                     ),
                     Padding(
