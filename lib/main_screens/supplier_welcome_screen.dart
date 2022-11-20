@@ -44,7 +44,7 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.popAndPushNamed(context, '/welcomescreen');
                       },
                     ),
                     Padding(
