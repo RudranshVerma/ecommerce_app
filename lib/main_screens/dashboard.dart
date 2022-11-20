@@ -1,3 +1,11 @@
+import 'dart:core';
+
+import 'package:ecommerce_app/dashboard_components/edit_business.dart';
+import 'package:ecommerce_app/dashboard_components/manage_products.dart';
+import 'package:ecommerce_app/dashboard_components/mystore.dart';
+import 'package:ecommerce_app/dashboard_components/supp_balance.dart';
+import 'package:ecommerce_app/dashboard_components/supp_statics.dart';
+import 'package:ecommerce_app/dashboard_components/suupl_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 
@@ -16,6 +24,14 @@ List<IconData> icons = [
   Icons.settings_applications,
   Icons.attach_money,
   Icons.show_chart,
+];
+List<Widget> pages = const [
+  MyStore(),
+  SupplierOrders(),
+  EditBusiness(),
+  ManageProducts(),
+  BalanceScreen(),
+  StaticsScreen(),
 ];
 
 class DashboardScreen extends StatelessWidget {
@@ -50,27 +66,33 @@ class DashboardScreen extends StatelessWidget {
             crossAxisSpacing: 50,
             crossAxisCount: 2,
             children: List.generate(6, (index) {
-              return Card(
-                elevation: 20,
-                shadowColor: Colors.purpleAccent.shade200,
-                color: Colors.blueGrey.withOpacity(0.7),
-                child: Column(children: [
-                  Icon(
-                    icons[index],
-                    size: 50,
-                    color: Colors.yellowAccent,
-                  ),
-                  Text(
-                    label[index],
-                    style: const TextStyle(
-                      fontFamily: 'Acme',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => pages[index]));
+                },
+                child: Card(
+                  elevation: 20,
+                  shadowColor: Colors.purpleAccent.shade200,
+                  color: Colors.blueGrey.withOpacity(0.7),
+                  child: Column(children: [
+                    Icon(
+                      icons[index],
+                      size: 50,
                       color: Colors.yellowAccent,
-                      letterSpacing: 2,
                     ),
-                  )
-                ]),
+                    Text(
+                      label[index],
+                      style: const TextStyle(
+                        fontFamily: 'Acme',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.yellowAccent,
+                        letterSpacing: 2,
+                      ),
+                    )
+                  ]),
+                ),
               );
             })),
       ),

@@ -1,3 +1,7 @@
+import 'package:ecommerce_app/customers_screens/customers_orders.dart';
+import 'package:ecommerce_app/customers_screens/wishlist.dart';
+import 'package:ecommerce_app/main_screens/cart.dart';
+import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -100,7 +104,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           color: Colors.yellow, fontSize: 24),
                                     ),
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const CartScreen(
+                                              back: AppBarBackButton(),
+                                            )));
+                              },
                             ),
                           ),
                           Container(
@@ -117,7 +128,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           color: Colors.black54, fontSize: 20),
                                     ),
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CustomerOrders()));
+                              },
                             ),
                           ),
                           Container(
@@ -138,7 +155,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           color: Colors.yellow, fontSize: 20),
                                     ),
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WhishlistScreen()));
+                              },
                             ),
                           )
                         ],
