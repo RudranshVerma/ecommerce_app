@@ -179,7 +179,10 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                 padding: const EdgeInsets.only(right: 8),
                                 child: YellowButton(
                                     label: 'Sign Up',
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/customer_signup');
+                                    },
                                     width: 0.25),
                               ),
                             ],
