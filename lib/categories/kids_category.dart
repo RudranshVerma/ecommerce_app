@@ -36,7 +36,7 @@ class KidsCategory extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CategHeaderLabel(
-                    headerLabel: 'Home & Garden',
+                    headerLabel: 'Kids',
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.68,
