@@ -3,6 +3,8 @@
 import 'dart:io';
 
 import 'package:ecommerce_app/widgtes/snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../widgtes/auth_widgets.dart';
@@ -59,6 +61,34 @@ class _CustomerRegisterState extends State<CustomerRegister> {
         _pickedImageError = e;
       });
       print(_pickedImageError);
+    }
+  }
+
+  void signUp() async {
+    if (_formKey.currentState!.validate()) {
+      if (_imageFile != null) {
+        // print('picked image');
+        // print('valid');
+        // print(name);
+        // print(email);
+        // print(password);
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        _formKey.currentState!.reset();
+        setState(() {
+          _imageFile = null;
+        });
+      } else {
+        MyMessageHandler.showSnackBar(
+          _scaffoldKey,
+          'please pick image first',
+        );
+      }
+    } else {
+      MyMessageHandler.showSnackBar(
+        _scaffoldKey,
+        'please fill all fields',
+      );
     }
   }
 
@@ -222,29 +252,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                       AuthMainButton(
                         mainButtonLabel: 'Sign up',
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (_imageFile != null) {
-                              print('picked image');
-                              print('valid');
-                              print(name);
-                              print(email);
-                              print(password);
-                              _formKey.currentState!.reset();
-                              setState(() {
-                                _imageFile = null;
-                              });
-                            } else {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'please pick image first',
-                              );
-                            }
-                          } else {
-                            MyMessageHandler.showSnackBar(
-                              _scaffoldKey,
-                              'please fill all fields',
-                            );
-                          }
+                          signUp();
                         },
                       )
                     ],

@@ -1,5 +1,10 @@
 import 'package:ecommerce_app/categories/Women_categ.dart';
+<<<<<<< HEAD
 
+=======
+import 'package:ecommerce_app/main_screens/home.dart';
+import 'package:ecommerce_app/widgtes/fake_search.dart';
+>>>>>>> e0058ce1b13dfa24302c61388c17c3b215d3e8e5
 import 'package:flutter/material.dart';
 
 import '../categories/accessories_category.dart';
