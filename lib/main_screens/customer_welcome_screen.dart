@@ -1,11 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../widgtes/yellow_button.dart';
 
 class CustomerWelcomeScreen extends StatefulWidget {
@@ -25,6 +21,12 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -224,7 +226,8 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                     setState(() {
                                       processing = true;
                                     });
-                                    await FirebaseAuth.instance.signInAnonymously();
+                                    await FirebaseAuth.instance
+                                        .signInAnonymously();
                                     Navigator.pushReplacementNamed(
                                         context, '/customer_home');
                                   },
