@@ -55,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               fontWeight: FontWeight.bold)),
                     )),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(19.0),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(
