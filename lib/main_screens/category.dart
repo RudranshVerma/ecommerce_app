@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/categories/Women_categ.dart';
 import 'package:ecommerce_app/main_screens/home.dart';
+import 'package:ecommerce_app/widgtes/fake_search.dart';
 import 'package:flutter/material.dart';
 
 import '../categories/accessories_category.dart';
@@ -49,7 +50,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-          elevation: 0, backgroundColor: Colors.white, title: FakeSearch()),
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: const FakeSearch()),
       body: Stack(children: [
         Positioned(bottom: 0, left: 0, child: sideNavigator(size)),
         Positioned(bottom: 0, right: 0, child: categView(size))
