@@ -6,13 +6,12 @@
     <string>pick image from gallery</string>
 	<key>NSCameraUsageDescription</key>
 	<string>pick image from camera</string>
-
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Ecommerce App</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone</string>
+	<!-- <key>NSMicrophoneUsageDescription</key>
+	<string>Microphone</string> -->
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

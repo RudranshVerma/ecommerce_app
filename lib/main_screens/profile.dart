@@ -2,6 +2,8 @@ import 'package:ecommerce_app/customers_screens/customers_orders.dart';
 import 'package:ecommerce_app/customers_screens/wishlist.dart';
 import 'package:ecommerce_app/main_screens/cart.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -227,13 +229,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const YellowDivider(),
                                 RepeatedListTile(
-                                  title: 'Log out',
-                                  icon: Icons.logout,
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, '/customerwelcomescreen');
-                                  },
-                                ),
+                                    title: 'Log out',
+                                    icon: Icons.logout,
+                                    onPressed: () async {
+                                      showCupertinoDialog<void>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            CupertinoAlertDialog(
+                                          title: const Text('Log Out'),
+                                          content: const Text(
+                                              'Are you sure to log out ?'),
+                                          actions: <CupertinoDialogAction>[
+                                            CupertinoDialogAction(
+                                              /// This parameter indicates this action is the default,
+                                              /// and turns the action's text to bold text.
+                                              isDefaultAction: true,
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('No'),
+                                            ),
+                                            CupertinoDialogAction(
+                                              /// This parameter indicates the action would perform
+                                              /// a destructive action such as deletion, and turns
+                                              /// the action's text color to red.
+                                              isDestructiveAction: true,
+                                              onPressed: () async {
+                                                await FirebaseAuth.instance
+                                                    .signOut();
+                                                // ignore: use_build_context_synchronously
+                                                Navigator.pushReplacementNamed(
+                                                    context, '/welcomescreen');
+                                              },
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
                               ]),
                             ),
                           )

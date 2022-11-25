@@ -26,6 +26,12 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -215,7 +221,6 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                               label: 'GUEST',
                               onPressed: () async {
                                 await FirebaseAuth.instance.signInAnonymously();
-                                // ignore: use_build_context_synchronously
                               },
                               child: const Icon(
                                 Icons.person,

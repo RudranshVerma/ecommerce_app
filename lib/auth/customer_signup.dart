@@ -29,20 +29,19 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   XFile? _imageFile;
   void _pickImageFromCamera() async {
     try {
-      final pickedImage = await _picker
-        ..pickImage(
-            source: ImageSource.camera,
-            maxHeight: 300,
-            maxWidth: 300,
-            imageQuality: 95);
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.camera,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
       setState(() {
-        _imageFile = pickedImage as XFile?;
+        _imageFile = pickedImage;
       });
-      print(_pickedImageError);
     } catch (e) {
       setState(() {
         _pickedImageError = e;
       });
+      print(_pickedImageError);
     }
   }
 
@@ -56,17 +55,17 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       setState(() {
         _imageFile = pickedImage;
       });
-      print(_pickedImageError);
     } catch (e) {
       setState(() {
         _pickedImageError = e;
       });
+      print(_pickedImageError);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var imageFile = _imageFile;
+    // var imageFile = _imageFile;
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
@@ -111,7 +110,6 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    // ignore: avoid_print
                                     _pickImageFromCamera();
                                   },
                                 ),
