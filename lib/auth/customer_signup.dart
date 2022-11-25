@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:ecommerce_app/main.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

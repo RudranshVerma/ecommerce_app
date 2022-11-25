@@ -1,8 +1,4 @@
-import 'package:ecommerce_app/main_screens/dashboard.dart';
-import 'package:ecommerce_app/main_screens/supplier_welcome_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'customer_welcome_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});

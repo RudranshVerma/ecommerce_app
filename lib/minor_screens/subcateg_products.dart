@@ -13,7 +13,7 @@ class SubCategProducts extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: AppBarBackButton(),
+        leading: const AppBarBackButton(),
         title: AppbarTitle(title: subcategName),
       ),
       body: Center(

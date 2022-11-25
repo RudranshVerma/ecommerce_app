@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:ecommerce_app/customers_screens/customers_orders.dart';
 import 'package:ecommerce_app/customers_screens/wishlist.dart';
 import 'package:ecommerce_app/main_screens/cart.dart';
@@ -245,7 +247,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               /// and turns the action's text to bold text.
                                               isDefaultAction: true,
                                               onPressed: () {
-                                                Navigator.pop(context);
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    '/customerwelcomescreen');
                                               },
                                               child: const Text('No'),
                                             ),
