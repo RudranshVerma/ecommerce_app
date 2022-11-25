@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../widgtes/auth_widgets.dart';
 
-
-
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
 
@@ -26,44 +24,45 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       GlobalKey<ScaffoldMessengerState>();
   bool passwordVisible = false;
   dynamic _pickedImageError;
-  final ImagePicker _picker=ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
-XFile? _imageFile;
-void _pickImageFromCamera() async
-{
-  try{
-  final pickedImage=await _picker..pickImage(source: ImageSource.camera,maxHeight: 300,maxWidth: 300,imageQuality: 95);
-  setState(() {
-    _imageFile= pickedImage as XFile?;
-  });
-  print(_pickedImageError);
+  XFile? _imageFile;
+  void _pickImageFromCamera() async {
+    try {
+      final pickedImage = await _picker
+        ..pickImage(
+            source: ImageSource.camera,
+            maxHeight: 300,
+            maxWidth: 300,
+            imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage as XFile?;
+      });
+      print(_pickedImageError);
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+    }
   }
-  catch(e)
-  {
-    setState(() {
-      _pickedImageError=e;
-    });
-  }
-}
 
-void _pickImageFromGallery() async
-{
-  try{
-  final pickedImage=await _picker.pickImage(source: ImageSource.gallery,maxHeight: 300,maxWidth: 300,imageQuality: 95);
-  setState(() {
-    _imageFile=pickedImage;
-  });
-  print(_pickedImageError);
+  void _pickImageFromGallery() async {
+    try {
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage;
+      });
+      print(_pickedImageError);
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+    }
   }
-  catch(e)
-  {
-    setState(() {
-      _pickedImageError=e;
-    });
-  }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +86,15 @@ void _pickImageFromGallery() async
                       ),
                       Row(
                         children: [
-                           Padding(
+                          Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 40),
                             child: CircleAvatar(
                               radius: 60,
                               backgroundColor: Colors.purpleAccent,
-                              backgroundImage: _imageFile == null?null:FileImage(File(_imageFile!.path)),
+                              backgroundImage: _imageFile == null
+                                  ? null
+                                  : FileImage(File(_imageFile!.path)),
                             ),
                           ),
                           Column(
@@ -130,8 +131,7 @@ void _pickImageFromGallery() async
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    // ignore: avoid_print
-                                   _pickImageFromGallery();
+                                    _pickImageFromGallery();
                                   },
                                 ),
                               ),
@@ -160,31 +160,31 @@ void _pickImageFromGallery() async
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your email';
-                              } else if (value.isValidEmail() == false) {
-                                return 'invalid email';
-                              } 
-                              else if (value.isValidEmail() == true) {
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your email';
+                            } else if (value.isValidEmail() == false) {
+                              return 'invalid email';
+                            } else if (value.isValidEmail() == true) {
                               //   MyMessageHandler.showSnackBar(
                               //     _scaffoldKey,
                               //     'your email is valid',
                               //   );
                               // }
                               return null;
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              email = value;
-                            },
-                            //controller: _emailcontroller,
-                            keyboardType: TextInputType.emailAddress;
-                            decoration: textFormDecoration.copyWith(
-                              labelText: 'Email Address',
-                              hintText: 'Enter Your email ',
-                            ),),
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          //controller: _emailcontroller,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: textFormDecoration.copyWith(
+                            labelText: 'Email Address',
+                            hintText: 'Enter Your email ',
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -226,30 +226,27 @@ void _pickImageFromGallery() async
                         mainButtonLabel: 'Sign up',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            if(_imageFile!=null)
-                            {
-                                   print('picked image');
-                                   print('valid');
-                                   print(name);
-                                   print(email);
-                                   print(password);
-                                   _formKey.currentState!.reset();
-                                   setState(() {
-                                     _imageFile = null;
-                                   });
-                            }
-                            else{
+                            if (_imageFile != null) {
+                              print('picked image');
+                              print('valid');
+                              print(name);
+                              print(email);
+                              print(password);
+                              _formKey.currentState!.reset();
+                              setState(() {
+                                _imageFile = null;
+                              });
+                            } else {
                               MyMessageHandler.showSnackBar(
-                              _scaffoldKey,
-                              'please pick image first',
-                            );
+                                _scaffoldKey,
+                                'please pick image first',
+                              );
                             }
                           } else {
                             MyMessageHandler.showSnackBar(
                               _scaffoldKey,
                               'please fill all fields',
                             );
-                            
                           }
                         },
                       )
@@ -264,5 +261,3 @@ void _pickImageFromGallery() async
     );
   }
 }
-
-

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "654348981556",
+    "project_id": "hyperlocal-ecommerce",
+    "storage_bucket": "hyperlocal-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654348981556:android:dc2fdb655c0a18fc998161",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654348981556-d9prn827lv4vjquuvcajc806ut2mvovu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd0i7klEx4u0YcT_fl4kjvjNQqak-4aNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654348981556-d9prn827lv4vjquuvcajc806ut2mvovu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
