@@ -10,6 +10,7 @@ import '../categories/homegarden_category.dart';
 import '../categories/kids_category.dart';
 import '../categories/men_category.dart';
 import '../categories/shoes_category.dart';
+import '../widgtes/fake_search.dart';
 
 List<ItemData> items = [
   ItemData(label: 'men'),
