@@ -206,39 +206,41 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                       color: Colors.white38,
                     ),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GoogleFacebookLogin(
-                            label: 'GOOGLE',
-                            onPressed: () {},
-                            child: const Image(
-                                image: AssetImage('images/inapp/google.jpg')),
-                          ),
-                          GoogleFacebookLogin(
-                            label: 'FACEBOOK',
-                            onPressed: () {},
-                            child: const Image(
-                                image: AssetImage('images/inapp/facebook.jpg')),
-                          ),
-                          processing == true
-                              ? const CircularProgressIndicator()
-                              : GoogleFacebookLogin(
-                                  label: 'GUEST',
-                                  onPressed: () async {
-                                    setState(() {
-                                      processing = true;
-                                    });
-                                    await FirebaseAuth.instance
-                                        .signInAnonymously();
-                                    Navigator.pushReplacementNamed(
-                                        context, '/customer_home');
-                                  },
-                                  child: const Icon(
-                                    Icons.person,
-                                    size: 55,
-                                    color: Colors.lightBlueAccent,
-                                  )),
-                        ]),
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GoogleFacebookLogin(
+                          label: 'GOOGLE',
+                          onPressed: () {},
+                          child: const Image(
+                              image: AssetImage('images/inapp/google.jpg')),
+                        ),
+                        GoogleFacebookLogin(
+                          label: 'FACEBOOK',
+                          onPressed: () {},
+                          child: const Image(
+                              image: AssetImage('images/inapp/facebook.jpg')),
+                        ),
+                        processing == true
+                            ? const CircularProgressIndicator()
+                            : GoogleFacebookLogin(
+                                label: 'GUEST',
+                                onPressed: () async {
+                                  setState(() {
+                                    processing = true;
+                                  });
+                                  await FirebaseAuth.instance
+                                      .signInAnonymously();
+                                  //Navigator.pop(context);
+                                  Navigator.pushReplacementNamed(
+                                      context, '/customer_home');
+                                },
+                                child: const Icon(
+                                  Icons.person,
+                                  size: 55,
+                                  color: Colors.lightBlueAccent,
+                                )),
+                      ],
+                    ),
                   ),
                 )
               ]))),
@@ -264,7 +266,7 @@ class GoogleFacebookLogin extends StatelessWidget {
         vertical: 8,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onPressed,
         child: Column(
           children: [
             SizedBox(height: 50, width: 50, child: child),

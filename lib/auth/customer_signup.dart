@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../widgtes/auth_widgets.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -19,9 +20,13 @@ class CustomerRegister extends StatefulWidget {
 }
 
 class _CustomerRegisterState extends State<CustomerRegister> {
+  late String extra;
+  late String profileImage;
   late String name;
   late String email;
   late String password;
+  late String _uid;
+  bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -30,6 +35,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? _imageFile;
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customer');
   void _pickImageFromCamera() async {
     try {
       final pickedImage = await _picker.pickImage(
@@ -69,17 +76,44 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   void signUp() async {
     if (_formKey.currentState!.validate()) {
       if (_imageFile != null) {
-        // print('picked image');
-        // print('valid');
-        // print(name);
-        // print(email);
-        // print(password);
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-        _formKey.currentState!.reset();
-        setState(() {
-          _imageFile = null;
-        });
+        try {
+          await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password);
+          firebase_storage.Reference ref = firebase_storage
+              .FirebaseStorage.instance
+              .ref('cust-images/$email.jpg');
+          await ref.putFile(File(_imageFile!.path));
+          _uid = FirebaseAuth.instance.currentUser!.uid;
+          profileImage = await ref.getDownloadURL();
+          await customers.doc(_uid).set({
+            'name': name,
+            'email': email,
+            'profileimage': profileImage,
+            'phone': '',
+            'address': '',
+            'cid': _uid,
+          });
+          _formKey.currentState!.reset();
+          setState(() {
+            _imageFile = null;
+          });
+          Navigator.pushReplacementNamed(context, '/customer_home');
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            MyMessageHandler.showSnackBar(
+              _scaffoldKey,
+              'The password provided is too weak.',
+            );
+            print('The password provided is too weak.');
+          } else if (e.code == 'email-already-in-use') {
+            MyMessageHandler.showSnackBar(
+              _scaffoldKey,
+              'The account already exists for that email.',
+            );
+
+            print('The account already exists for that email.');
+          }
+        }
       } else {
         MyMessageHandler.showSnackBar(
           _scaffoldKey,
@@ -191,8 +225,16 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         child: TextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
+                              MyMessageHandler.showSnackBar(
+                                _scaffoldKey,
+                                'Please enter your email',
+                              );
                               return 'please enter your email';
                             } else if (value.isValidEmail() == false) {
+                              MyMessageHandler.showSnackBar(
+                                _scaffoldKey,
+                                'Please enter valid email',
+                              );
                               return 'invalid email';
                             } else if (value.isValidEmail() == true) {
                               //   MyMessageHandler.showSnackBar(

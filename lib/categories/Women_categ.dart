@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:ecommerce_app/widgtes/categ_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utilities/categ_list.dart';
