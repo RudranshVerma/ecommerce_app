@@ -19,6 +19,7 @@ class CustomerRegister extends StatefulWidget {
 }
 
 class _CustomerRegisterState extends State<CustomerRegister> {
+  late String extra;
   late String profileImage;
   late String name;
   late String email;
