@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/auth/customer_login.dart';
 import 'package:flutter/material.dart';
 import 'auth/customer_signup.dart';
 import 'main_screens/customer_home.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/supplierwelcomescreen': (context) => const SupplierWelcomeScreen(),
         '/customerwelcomescreen': (context) => const CustomerWelcomeScreen(),
         '/customer_signup': (context) => const CustomerRegister(),
+        '/cutomer_login': (context) => const CustomerLogin(),
       },
     );
   }
