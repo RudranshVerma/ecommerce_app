@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +33,8 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
@@ -228,6 +232,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                     });
                                     await FirebaseAuth.instance
                                         .signInAnonymously();
+                                    //Navigator.pop(context);
                                     Navigator.pushReplacementNamed(
                                         context, '/customer_home');
                                   },

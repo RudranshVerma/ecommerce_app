@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/minor_screens/search.dart';
 import 'package:flutter/material.dart';
 
 import '../widgtes/fake_search.dart';

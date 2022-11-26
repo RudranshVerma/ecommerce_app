@@ -6,13 +6,13 @@ import 'package:ecommerce_app/main_screens/cart.dart';
 import 'package:ecommerce_app/widgtes/alert_dialog.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
@@ -244,7 +244,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                       tabYes: () async {
                                         await FirebaseAuth.instance.signOut();
-                                        // ignore: use_build_context_synchronously
                                         Navigator.pop(context);
                                         Navigator.pushReplacementNamed(
                                             context, '/welcomescreen');

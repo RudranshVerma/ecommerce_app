@@ -1,5 +1,4 @@
-import 'package:ecommerce_app/categories/Women_categ.dart';
-import 'package:ecommerce_app/main_screens/home.dart';
+import 'package:ecommerce_app/categories/women_categ.dart';
 import 'package:ecommerce_app/widgtes/fake_search.dart';
 import 'package:flutter/material.dart';
 
