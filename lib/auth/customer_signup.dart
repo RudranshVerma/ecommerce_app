@@ -19,7 +19,6 @@ class CustomerRegister extends StatefulWidget {
 }
 
 class _CustomerRegisterState extends State<CustomerRegister> {
-  late String extra;
   late String profileImage;
   late String name;
   late String email;
@@ -73,25 +72,28 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   }
 
   void signUp() async {
+    setState(() {
+      processing = true;
+    });
     if (_formKey.currentState!.validate()) {
       if (_imageFile != null) {
         try {
           await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password);
-          // firebase_storage.Reference ref = firebase_storage
-          //     .FirebaseStorage.instance
-          //     .ref('cust-images/$email.jpg');
-          // await ref.putFile(File(_imageFile!.path));
-          // _uid = FirebaseAuth.instance.currentUser!.uid;
-          // profileImage = await ref.getDownloadURL();
-          // await customers.doc(_uid).set({
-          //   'name': name,
-          //   'email': email,
-          //   'profileimage': profileImage,
-          //   'phone': '',
-          //   'address': '',
-          //   'cid': _uid,
-          // });
+          firebase_storage.Reference ref = firebase_storage
+              .FirebaseStorage.instance
+              .ref('cust-images/$email.jpg');
+          await ref.putFile(File(_imageFile!.path));
+          _uid = FirebaseAuth.instance.currentUser!.uid;
+          profileImage = await ref.getDownloadURL();
+          await customers.doc(_uid).set({
+            'name': name,
+            'email': email,
+            'profileimage': profileImage,
+            'phone': '',
+            'address': '',
+            'cid': _uid,
+          });
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
@@ -99,12 +101,18 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           Navigator.pushReplacementNamed(context, '/customer_home');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
+            setState(() {
+              processing = false;
+            });
             MyMessageHandler.showSnackBar(
               _scaffoldKey,
               'The password provided is too weak.',
             );
             print('The password provided is too weak.');
           } else if (e.code == 'email-already-in-use') {
+            setState(() {
+              processing = false;
+            });
             MyMessageHandler.showSnackBar(
               _scaffoldKey,
               'The account already exists for that email.',
@@ -114,12 +122,18 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           }
         }
       } else {
+        setState(() {
+          processing = false;
+        });
         MyMessageHandler.showSnackBar(
           _scaffoldKey,
           'please pick image first',
         );
       }
     } else {
+      setState(() {
+        processing = false;
+      });
       MyMessageHandler.showSnackBar(
         _scaffoldKey,
         'please fill all fields',
@@ -290,14 +304,19 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                       HaveAccount(
                         haveAccount: 'Already have an account',
                         actionLabel: 'Log In ',
-                        onPressed: () {},
-                      ),
-                      AuthMainButton(
-                        mainButtonLabel: 'Sign up',
                         onPressed: () {
-                          signUp();
+                          Navigator.pushReplacementNamed(
+                              context, '/customer_login');
                         },
-                      )
+                      ),
+                      processing == true
+                          ? const CircularProgressIndicator()
+                          : AuthMainButton(
+                              mainButtonLabel: 'Sign up',
+                              onPressed: () {
+                                signUp();
+                              },
+                            )
                     ],
                   ),
                 ),
