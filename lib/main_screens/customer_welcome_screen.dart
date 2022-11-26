@@ -33,8 +33,6 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-
-    
     return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
@@ -267,7 +265,7 @@ class GoogleFacebookLogin extends StatelessWidget {
         vertical: 8,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onPressed,
         child: Column(
           children: [
             SizedBox(height: 50, width: 50, child: child),
