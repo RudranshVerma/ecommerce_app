@@ -1,18 +1,27 @@
 {
   "project_info": {
     "project_number": "711846954335",
+    "firebase_url": "https://hyperlocal--e-commerce-default-rtdb.firebaseio.com",
     "project_id": "hyperlocal--e-commerce",
     "storage_bucket": "hyperlocal--e-commerce.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:711846954335:android:15affdbc6b3279702c62ea",
+        "mobilesdk_app_id": "1:711846954335:android:a9c5070db209f26c2c62ea",
         "android_client_info": {
           "package_name": "com.example.ecommerce_app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "711846954335-rv6o8j3ndf5vs56vd0bggeh3ils0srtl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecommerce_app",
+            "certificate_hash": "ca11761531546a61e1280e7df561a95780abd1df"
+          }
+        },
         {
           "client_id": "711846954335-fhemohrfsqjgbont9l6o243461nobduk.apps.googleusercontent.com",
           "client_type": 3
