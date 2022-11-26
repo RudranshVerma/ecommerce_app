@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_label
+// ignore_for_file: avoid_print, unused_label, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -78,20 +78,20 @@ class _CustomerRegisterState extends State<CustomerRegister> {
         try {
           await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password);
-          firebase_storage.Reference ref = firebase_storage
-              .FirebaseStorage.instance
-              .ref('cust-images/$email.jpg');
-          await ref.putFile(File(_imageFile!.path));
-          _uid = FirebaseAuth.instance.currentUser!.uid;
-          profileImage = await ref.getDownloadURL();
-          await customers.doc(_uid).set({
-            'name': name,
-            'email': email,
-            'profileimage': profileImage,
-            'phone': '',
-            'address': '',
-            'cid': _uid,
-          });
+          // firebase_storage.Reference ref = firebase_storage
+          //     .FirebaseStorage.instance
+          //     .ref('cust-images/$email.jpg');
+          // await ref.putFile(File(_imageFile!.path));
+          // _uid = FirebaseAuth.instance.currentUser!.uid;
+          // profileImage = await ref.getDownloadURL();
+          // await customers.doc(_uid).set({
+          //   'name': name,
+          //   'email': email,
+          //   'profileimage': profileImage,
+          //   'phone': '',
+          //   'address': '',
+          //   'cid': _uid,
+          // });
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
