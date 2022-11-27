@@ -179,7 +179,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                 width: 0.25,
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(
-                                      context, '/customer_home');
+                                      context, '/customer_login');
                                 },
                               ),
                               Padding(

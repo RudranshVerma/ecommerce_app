@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         '/supplierwelcomescreen': (context) => const SupplierWelcomeScreen(),
         '/customerwelcomescreen': (context) => const CustomerWelcomeScreen(),
         '/customer_signup': (context) => const CustomerRegister(),
-        '/cutomer_login': (context) => const CustomerLogin(),
+        '/customer_login': (context) => const CustomerLogin(),
       },
     );
   }
