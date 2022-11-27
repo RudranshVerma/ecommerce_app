@@ -20,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   CollectionReference customers =
-      FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('customers');
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +90,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           backgroundImage: NetworkImage(
                                               data['profileimage']),
                                         ),
-                                  const CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        AssetImage('images/inapp/guest.jpg'),
-                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 25),
                                     child: Text(
