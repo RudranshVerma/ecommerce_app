@@ -1,9 +1,10 @@
-import 'dart:math';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgtes/yellow_button.dart';
-import 'package:ecommerce_app/main_screens/welcomescreen.dart';
 
 class CustomerWelcomeScreen extends StatefulWidget {
   const CustomerWelcomeScreen({Key? key}) : super(key: key);
@@ -15,13 +16,19 @@ class CustomerWelcomeScreen extends StatefulWidget {
 class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
+  bool processing = false;
   @override
   void initState() {
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -199,31 +206,41 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                       color: Colors.white38,
                     ),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GoogleFacebookLogin(
-                            label: 'GOOGLE',
-                            onPressed: () {},
-                            child: const Image(
-                                image: AssetImage('images/inapp/google.jpg')),
-                          ),
-                          GoogleFacebookLogin(
-                            label: 'FACEBOOK',
-                            onPressed: () {},
-                            child: const Image(
-                                image: AssetImage('images/inapp/facebook.jpg')),
-                          ),
-                          GoogleFacebookLogin(
-                              label: 'GUEST',
-                              onPressed: () {},
-                              child:
-                                  // const Image(image: AssetImage('images/inapp/guest.jpg')),
-                                  const Icon(
-                                Icons.person,
-                                size: 55,
-                                color: Colors.lightBlueAccent,
-                              )),
-                        ]),
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GoogleFacebookLogin(
+                          label: 'GOOGLE',
+                          onPressed: () {},
+                          child: const Image(
+                              image: AssetImage('images/inapp/google.jpg')),
+                        ),
+                        GoogleFacebookLogin(
+                          label: 'FACEBOOK',
+                          onPressed: () {},
+                          child: const Image(
+                              image: AssetImage('images/inapp/facebook.jpg')),
+                        ),
+                        processing == true
+                            ? const CircularProgressIndicator()
+                            : GoogleFacebookLogin(
+                                label: 'GUEST',
+                                onPressed: () async {
+                                  setState(() {
+                                    processing = true;
+                                  });
+                                  await FirebaseAuth.instance
+                                      .signInAnonymously();
+                                  //Navigator.pop(context);
+                                  Navigator.pushReplacementNamed(
+                                      context, '/customer_home');
+                                },
+                                child: const Icon(
+                                  Icons.person,
+                                  size: 55,
+                                  color: Colors.lightBlueAccent,
+                                )),
+                      ],
+                    ),
                   ),
                 )
               ]))),
@@ -249,7 +266,7 @@ class GoogleFacebookLogin extends StatelessWidget {
         vertical: 8,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onPressed,
         child: Column(
           children: [
             SizedBox(height: 50, width: 50, child: child),

@@ -24,7 +24,7 @@ class FakeSearch extends StatelessWidget {
             Row(
               children: const [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Icon(
                     Icons.search,
                     color: Colors.grey,

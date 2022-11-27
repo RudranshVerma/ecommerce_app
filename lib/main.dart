@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/auth/customer_login.dart';
 import 'package:flutter/material.dart';
 import 'auth/customer_signup.dart';
 import 'main_screens/customer_home.dart';
@@ -5,8 +6,11 @@ import 'main_screens/customer_welcome_screen.dart';
 import 'main_screens/supplier_home.dart';
 import 'main_screens/supplier_welcome_screen.dart';
 import 'main_screens/welcomescreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/supplierwelcomescreen': (context) => const SupplierWelcomeScreen(),
         '/customerwelcomescreen': (context) => const CustomerWelcomeScreen(),
         '/customer_signup': (context) => const CustomerRegister(),
+        '/cutomer_login': (context) => const CustomerLogin(),
       },
     );
   }

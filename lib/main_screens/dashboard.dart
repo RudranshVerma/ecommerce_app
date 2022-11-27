@@ -54,7 +54,7 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/supplierwelcomescreen');
+              Navigator.popAndPushNamed(context, '/supplierwelcomescreen');
             },
           )
         ],

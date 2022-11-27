@@ -1,5 +1,3 @@
-import 'package:ecommerce_app/main.dart';
-import 'package:ecommerce_app/minor_screens/subcateg_products.dart';
 import 'package:ecommerce_app/widgtes/categ_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/utilities/categ_list.dart';

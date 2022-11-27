@@ -82,7 +82,7 @@ class SubCategModel extends StatelessWidget {
               )),
           Text(
             subcateglabel,
-            style: TextStyle(fontSize: 11),
+            style: const TextStyle(fontSize: 11),
           )
         ],
       ),
@@ -100,7 +100,7 @@ class CategHeaderLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(30.0),
       child: Text(
         headerLabel,
         style: const TextStyle(

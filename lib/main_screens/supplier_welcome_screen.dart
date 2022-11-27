@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:ecommerce_app/main_screens/welcomescreen.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import '../widgtes/yellow_button.dart';
 
@@ -25,6 +27,12 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -45,7 +53,7 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        Navigator.popAndPushNamed(context,'/welcomescreen');
+                        Navigator.popAndPushNamed(context, '/welcomescreen');
                       },
                     ),
                     Padding(
@@ -212,7 +220,9 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                           ),
                           GoogleFacebookLogin(
                               label: 'GUEST',
-                              onPressed: () {},
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signInAnonymously();
+                              },
                               child: const Icon(
                                 Icons.person,
                                 size: 55,
