@@ -19,8 +19,8 @@ class SupplierRegister extends StatefulWidget {
 }
 
 class _SupplierRegisterState extends State<SupplierRegister> {
-  late String profileImage;
-  late String name;
+  late String storeLogo;
+  late String storeName;
   late String email;
   late String password;
   late String _uid;
@@ -33,8 +33,8 @@ class _SupplierRegisterState extends State<SupplierRegister> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? _imageFile;
-  CollectionReference customers =
-      FirebaseFirestore.instance.collection('customer');
+  CollectionReference suppliers =
+      FirebaseFirestore.instance.collection('suppliers');
   void _pickImageFromCamera() async {
     try {
       final pickedImage = await _picker.pickImage(
@@ -82,23 +82,24 @@ class _SupplierRegisterState extends State<SupplierRegister> {
               .createUserWithEmailAndPassword(email: email, password: password);
           firebase_storage.Reference ref = firebase_storage
               .FirebaseStorage.instance
-              .ref('cust-images/$email.jpg');
+              .ref('supp-images/$email.jpg');
           await ref.putFile(File(_imageFile!.path));
           _uid = FirebaseAuth.instance.currentUser!.uid;
-          profileImage = await ref.getDownloadURL();
-          await customers.doc(_uid).set({
-            'name': name,
+          storeLogo = await ref.getDownloadURL();
+          await suppliers.doc(_uid).set({
+            'storename': storeName,
             'email': email,
-            'profileimage': profileImage,
+            'storelogo': storeLogo,
             'phone': '',
             'address': '',
-            'cid': _uid,
+            'sid': _uid,
+            'coverimage': '',
           });
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, '/customer_home');
+          Navigator.pushReplacementNamed(context, '/supplier_login');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {
@@ -225,7 +226,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                               return null;
                             },
                             onChanged: ((value) {
-                              name = value;
+                              storeName = value;
                             }),
                             // controller: _namecontroller,
                             decoration: textFormDecoration.copyWith(
@@ -306,7 +307,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                         actionLabel: 'Log In ',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/customer_login');
+                              context, '/supplier_login');
                         },
                       ),
                       processing == true
