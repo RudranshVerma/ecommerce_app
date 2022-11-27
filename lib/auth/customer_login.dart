@@ -163,7 +163,10 @@ class _CustomerLoginState extends State<CustomerLogin> {
                         },
                       ),
                       processing == true
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: Colors.purple,
+                            ))
                           : AuthMainButton(
                               mainButtonLabel: 'Log In',
                               onPressed: () {
