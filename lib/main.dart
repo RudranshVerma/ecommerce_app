@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/auth/customer_login.dart';
+import 'package:ecommerce_app/auth/supplier_signup.dart';
 import 'package:flutter/material.dart';
 import 'auth/customer_signup.dart';
+import 'auth/supplier_login.dart';
 import 'main_screens/customer_home.dart';
 import 'main_screens/customer_welcome_screen.dart';
 import 'main_screens/supplier_home.dart';
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
         '/customerwelcomescreen': (context) => const CustomerWelcomeScreen(),
         '/customer_signup': (context) => const CustomerRegister(),
         '/customer_login': (context) => const CustomerLogin(),
+        '/supplier_login': (context) => const SupplierLogin(),
+        '/supplier_signup': (context) => const SupplierRegister(),
       },
     );
   }
