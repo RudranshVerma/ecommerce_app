@@ -34,7 +34,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
 
   XFile? _imageFile;
   CollectionReference customers =
-      FirebaseFirestore.instance.collection('customer');
+      FirebaseFirestore.instance.collection('customers');
   void _pickImageFromCamera() async {
     try {
       final pickedImage = await _picker.pickImage(
