@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -9,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../widgtes/auth_widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
-import 'package:firebase_storage/firebase_storage.dart';
 
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
