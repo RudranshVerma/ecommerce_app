@@ -21,7 +21,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
   late String _uid;
 
   CollectionReference customers =
-      FirebaseFirestore.instance.collection('customer');
+      FirebaseFirestore.instance.collection('customers');
   @override
   void initState() {
     super.initState();
