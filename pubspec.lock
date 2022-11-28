@@ -240,6 +240,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+  javanese_date_converter:
+    dependency: "direct main"
+    description:
+      name: javanese_date_converter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   js:
     dependency: transitive
     description:

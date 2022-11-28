@@ -4,13 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgtes/auth_widgets.dart';
 
-class CustomerLogin extends StatefulWidget {
-  const CustomerLogin({super.key});
+class SupplierLogin extends StatefulWidget {
+  const SupplierLogin({super.key});
   @override
-  State<CustomerLogin> createState() => _CustomerLoginState();
+  State<SupplierLogin> createState() => _SupplierLoginState();
 }
 
-class _CustomerLoginState extends State<CustomerLogin> {
+class _SupplierLoginState extends State<SupplierLogin> {
   late String email;
   late String password;
   bool processing = false;
@@ -28,7 +28,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         _formKey.currentState!.reset();
-        Navigator.pushReplacementNamed(context, '/customer_home');
+        Navigator.pushReplacementNamed(context, '/supplier_home');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {

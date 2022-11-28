@@ -11,16 +11,16 @@ import 'package:image_picker/image_picker.dart';
 import '../widgtes/auth_widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class CustomerRegister extends StatefulWidget {
-  const CustomerRegister({super.key});
+class SupplierRegister extends StatefulWidget {
+  const SupplierRegister({super.key});
 
   @override
-  State<CustomerRegister> createState() => _CustomerRegisterState();
+  State<SupplierRegister> createState() => _SupplierRegisterState();
 }
 
-class _CustomerRegisterState extends State<CustomerRegister> {
-  late String profileImage;
-  late String name;
+class _SupplierRegisterState extends State<SupplierRegister> {
+  late String storeLogo;
+  late String storeName;
   late String email;
   late String password;
   late String _uid;
@@ -33,8 +33,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? _imageFile;
-  CollectionReference customers =
-      FirebaseFirestore.instance.collection('customers');
+  CollectionReference suppliers =
+      FirebaseFirestore.instance.collection('suppliers');
   void _pickImageFromCamera() async {
     try {
       final pickedImage = await _picker.pickImage(
@@ -82,23 +82,24 @@ class _CustomerRegisterState extends State<CustomerRegister> {
               .createUserWithEmailAndPassword(email: email, password: password);
           firebase_storage.Reference ref = firebase_storage
               .FirebaseStorage.instance
-              .ref('cust-images/$email.jpg');
+              .ref('supp-images/$email.jpg');
           await ref.putFile(File(_imageFile!.path));
           _uid = FirebaseAuth.instance.currentUser!.uid;
-          profileImage = await ref.getDownloadURL();
-          await customers.doc(_uid).set({
-            'name': name,
+          storeLogo = await ref.getDownloadURL();
+          await suppliers.doc(_uid).set({
+            'storename': storeName,
             'email': email,
-            'profileimage': profileImage,
+            'storelogo': storeLogo,
             'phone': '',
             'address': '',
-            'cid': _uid,
+            'sid': _uid,
+            'coverimage': '',
           });
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, '/customer_login');
+          Navigator.pushReplacementNamed(context, '/supplier_login');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {
@@ -225,7 +226,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                               return null;
                             },
                             onChanged: ((value) {
-                              name = value;
+                              storeName = value;
                             }),
                             // controller: _namecontroller,
                             decoration: textFormDecoration.copyWith(
@@ -306,7 +307,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         actionLabel: 'Log In ',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/customer_login');
+                              context, '/supplier_login');
                         },
                       ),
                       processing == true

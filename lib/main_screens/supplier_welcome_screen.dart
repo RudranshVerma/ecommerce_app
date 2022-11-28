@@ -180,14 +180,17 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                                 width: 0.25,
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(
-                                      context, '/supplier_home');
+                                      context, '/supplier_login');
                                 },
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child: YellowButton(
                                     label: 'Sign Up',
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/supplier_signup');
+                                    },
                                     width: 0.25),
                               ),
                             ],

@@ -2,6 +2,7 @@
 
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgtes/yellow_button.dart';
@@ -17,6 +18,10 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool processing = false;
+  late String _uid;
+
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
   @override
   void initState() {
     super.initState();
@@ -179,7 +184,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                 width: 0.25,
                                 onPressed: () {
                                   Navigator.pushReplacementNamed(
-                                      context, '/customer_home');
+                                      context, '/customer_login');
                                 },
                               ),
                               Padding(
@@ -229,8 +234,20 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen>
                                     processing = true;
                                   });
                                   await FirebaseAuth.instance
-                                      .signInAnonymously();
-                                  //Navigator.pop(context);
+                                      .signInAnonymously()
+                                      .whenComplete(() async {
+                                    _uid =
+                                        FirebaseAuth.instance.currentUser!.uid;
+                                    await customers.doc(_uid).set({
+                                      'name': '',
+                                      'email': '',
+                                      'profileimage': '',
+                                      'phone': '',
+                                      'address': '',
+                                      'cid': _uid,
+                                    });
+                                  });
+
                                   Navigator.pushReplacementNamed(
                                       context, '/customer_home');
                                 },
