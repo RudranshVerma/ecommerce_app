@@ -42,6 +42,7 @@ dependencies:
   firebase_storage: ^11.0.6
   firebase_core: ^2.3.0
   javanese_date_converter: ^0.0.3
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:
