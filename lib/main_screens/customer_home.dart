@@ -2,7 +2,7 @@ import 'package:ecommerce_app/main_screens/cart.dart';
 import 'package:ecommerce_app/main_screens/category.dart';
 import 'package:ecommerce_app/main_screens/home.dart';
 import 'package:ecommerce_app/main_screens/profile.dart';
-import 'package:ecommerce_app/main_screens/store.dart';
+import 'package:ecommerce_app/main_screens/stores.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

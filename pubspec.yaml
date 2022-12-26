@@ -43,6 +43,9 @@ dependencies:
   firebase_core: ^2.3.0
   javanese_date_converter: ^0.0.3
   uuid: ^3.0.5
+  staggered_grid_view_flutter: ^0.0.4
+  flutter_swiper_null_safety: ^1.0.2
+  font_awesome_flutter: ^10.2.1
 
 dev_dependencies:
   flutter_test:
@@ -111,3 +114,7 @@ flutter:
     - family: Acme
       fonts:
         - asset: fonts/Acme-Regular.ttf
+    - family: AkayaTelivigala
+      fonts:
+        - asset: fonts/AkayaTelivigala-Regular.ttf
+             
