@@ -130,10 +130,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               )),
                         ],
                       ),
-                      Text(
-                        (widget.proList['instock'].toString()) +
-                            (' pieces  available in stock '),
-                        style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                      Center(
+                        child: Text(
+                          (widget.proList['instock'].toString()) +
+                              (' pieces  available in stock '),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.blueGrey),
+                        ),
                       ),
                       const ProDetailsHeader(
                         label: '   Item Description   ',
@@ -229,8 +232,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 IconButton(
                     onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
-                YellowButton(
-                    label: 'ADD TO CART', onPressed: () {}, width: 0.55)
+                YellowButton(label: 'ADD TO CART', onPressed: () {}, width: 0.5)
               ],
             ),
           ),
