@@ -227,10 +227,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         icon: const Icon(Icons.shopping_cart)),
                   ],
                 ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
-                YellowButton(
-                    label: 'ADD TO CART', onPressed: () {}, width: 0.55)
+                // IconButton(
+                //     onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
+                YellowButton(label: 'ADD TO CART', onPressed: () {}, width: 0.5)
               ],
             ),
           ),
