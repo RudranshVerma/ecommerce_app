@@ -2,7 +2,8 @@
 
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
 import '../widgtes/yellow_button.dart';
 
 class CartScreen extends StatefulWidget {
@@ -34,37 +35,62 @@ class _CartScreenState extends State<CartScreen> {
               )
             ],
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Your Cart is Empty!',
-                  style: TextStyle(fontSize: 30),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Material(
-                  color: Colors.lightBlueAccent,
-                  borderRadius: BorderRadius.circular(25),
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width * 0.6,
-                    onPressed: () {
-                      Navigator.canPop(context)
-                          ? Navigator.pop(context)
-                          : Navigator.pushReplacementNamed(
-                              context, '/customer_home');
-                    },
-                    child: const Text(
-                      'Continue Shopping',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
-            ),
+          body: Consumer<Cart>(
+            builder: (context, cart, child) {
+              return ListView.builder(
+                  itemCount: cart.count,
+                  itemBuilder: (context, index) {
+                    // return Text(cart.getItems[index].name);
+                    return Card(
+                      child: SizedBox(
+                        height: 100,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              width: 120,
+                              child: Image.network(
+                                  cart.getItems[index].imagesUrl.first),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            },
           ),
+
+          // Center(
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       const Text(
+          //         'Your Cart is Empty!',
+          //         style: TextStyle(fontSize: 30),
+          //       ),
+          //       const SizedBox(
+          //         height: 50,
+          //       ),
+          //       Material(
+          //         color: Colors.lightBlueAccent,
+          //         borderRadius: BorderRadius.circular(25),
+          //         child: MaterialButton(
+          //           minWidth: MediaQuery.of(context).size.width * 0.6,
+          //           onPressed: () {
+          //             Navigator.canPop(context)
+          //                 ? Navigator.pop(context)
+          //                 : Navigator.pushReplacementNamed(
+          //                     context, '/customer_home');
+          //           },
+          //           child: const Text(
+          //             'Continue Shopping',
+          //             style: TextStyle(fontSize: 18, color: Colors.white),
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
           bottomSheet:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
