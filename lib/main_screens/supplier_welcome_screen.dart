@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -17,6 +18,10 @@ class SupplierWelcomeScreen extends StatefulWidget {
 class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  bool processing = false;
+  late String _uid;
+  CollectionReference anonymous =
+      FirebaseFirestore.instance.collection('anonymous');
 
   @override
   void initState() {
@@ -221,16 +226,38 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                             child: const Image(
                                 image: AssetImage('images/inapp/facebook.jpg')),
                           ),
-                          GoogleFacebookLogin(
-                              label: 'GUEST',
-                              onPressed: () async {
-                                await FirebaseAuth.instance.signInAnonymously();
-                              },
-                              child: const Icon(
-                                Icons.person,
-                                size: 55,
-                                color: Colors.lightBlueAccent,
-                              )),
+                          processing == true
+                              ? const CircularProgressIndicator()
+                              : GoogleFacebookLogin(
+                                  label: 'GUEST',
+                                  onPressed: () async {
+                                    setState(() {
+                                      processing = true;
+                                    });
+                                    await FirebaseAuth.instance
+                                        .signInAnonymously()
+                                        .whenComplete(() async {
+                                      _uid = FirebaseAuth
+                                          .instance.currentUser!.uid;
+                                      await anonymous.doc(_uid).set({
+                                        'name': '',
+                                        'email': '',
+                                        'profileimage': '',
+                                        'phone': '',
+                                        'address': '',
+                                        'cid': _uid,
+                                      });
+                                    });
+
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pushReplacementNamed(
+                                        context, '/supplier_home');
+                                  },
+                                  child: const Icon(
+                                    Icons.person,
+                                    size: 55,
+                                    color: Colors.lightBlueAccent,
+                                  )),
                         ]),
                   ),
                 )
