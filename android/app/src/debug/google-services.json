@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "665192311005",
-    "project_id": "hyperlocalproject-9a990",
-    "storage_bucket": "hyperlocalproject-9a990.appspot.com"
+    "project_number": "578473189432",
+    "project_id": "hyperstore-2101f",
+    "storage_bucket": "hyperstore-2101f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:665192311005:android:f8cc4cb33a1372fd1ad334",
+        "mobilesdk_app_id": "1:578473189432:android:5adb911d42d5bdfaa206cd",
         "android_client_info": {
           "package_name": "com.example.ecommerce_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "665192311005-727no65rjujs14i67i2n064f0a3c3j3g.apps.googleusercontent.com",
+          "client_id": "578473189432-lp2b0vjclgiqf0nebc4aapoo4obfm3k9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcTzyHnEw-p2cRFgSoVmA2f6tp6pkmOO0"
+          "current_key": "AIzaSyC5W_IEorcuYhSxYGIBfEudM63N0bwbTgE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "665192311005-727no65rjujs14i67i2n064f0a3c3j3g.apps.googleusercontent.com",
+              "client_id": "578473189432-lp2b0vjclgiqf0nebc4aapoo4obfm3k9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/main_screens/cart.dart';
 import 'package:ecommerce_app/main_screens/visit_store.dart';
@@ -82,7 +80,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: CircleAvatar(
                             backgroundColor: Colors.yellow,
                             child: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_back_ios_new,
                                 color: Colors.black,
                               ),
@@ -97,7 +95,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: CircleAvatar(
                             backgroundColor: Colors.yellow,
                             child: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.share,
                                 color: Colors.black,
                               ),
@@ -132,7 +130,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ),
                                 Text(
                                   widget.proList['price'].toStringAsFixed(2),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600),
@@ -174,7 +172,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         color: Colors.red,
                                         size: 30,
                                       )
-                                    : Icon(
+                                    : const Icon(
                                         Icons.favorite_outline,
                                         color: Colors.red,
                                         size: 30,
@@ -184,8 +182,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Text(
                           (widget.proList['instock'].toString()) +
                               (' pieces  available in stock '),
-                          style:
-                              TextStyle(fontSize: 16, color: Colors.blueGrey),
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.blueGrey),
                         ),
                         const ProDetailsHeader(
                           label: '   Item Description   ',
@@ -284,26 +282,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           back: AppBarBackButton(),
                                         )));
                           },
-                          icon: Badge(
-                              showBadge: context.read<Cart>().getItems.isEmpty
-                                  ? false
-                                  : true,
-                              padding: const EdgeInsets.all(2),
-                              badgeColor: Colors.yellow,
-                              badgeContent: Text(
-                                context
-                                    .watch<Cart>()
-                                    .getItems
-                                    .length
-                                    .toString(),
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              child: const Icon(Icons.shopping_cart))),
+                          //   icon:Badge(
+                          //           showBadge: context.read<Cart>().getItems.isEmpty
+                          //               ? false
+                          //               : true,
+                          //           padding: const EdgeInsets.all(2),
+                          //           badgeColor: Colors.yellow,
+                          //           badgeContent: Text(
+                          //             context.watch<Cart>().getItems.length.toString(),
+                          //             style: const TextStyle(
+                          //                 fontSize: 16, fontWeight: FontWeight.w600),
+                          //           ),
+                          //           child: const Icon(Icons.shopping_cart),
+                          //         )),
+                          //   ],
+                          // ),
+                          icon: const Icon(Icons.shopping_cart)),
                     ],
                   ),
-                  // IconButton(
-                  //     onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
                   YellowButton(
                       label: existingItemCart != null
                           ? 'added to cart'
