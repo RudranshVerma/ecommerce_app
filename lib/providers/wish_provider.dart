@@ -1,28 +1,17 @@
-import 'dart:core';
-
 import 'package:ecommerce_app/providers/product_class.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
-class Cart extends ChangeNotifier {
+class Wish extends ChangeNotifier {
   final List<Product> _list = [];
-  List<Product> get getItems {
+  List<Product> get getWishItems {
     return _list;
-  }
-
-  double get totalPrice {
-    var total = 0.0;
-
-    for (var item in _list) {
-      total += item.price * item.qty;
-    }
-    return total;
   }
 
   int? get count {
     return _list.length;
   }
 
-  void addItem(
+  Future<void> addWishItem(
     String name,
     double price,
     int qty,
@@ -30,7 +19,7 @@ class Cart extends ChangeNotifier {
     List imagesUrl,
     String documentId,
     String suppId,
-  ) {
+  ) async {
     final product = Product(
         name: name,
         price: price,
@@ -43,23 +32,18 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void increment(Product product) {
-    product.increase();
-    notifyListeners();
-  }
-
-  void reduceByOne(Product product) {
-    product.decrease();
-    notifyListeners();
-  }
-
   void removeItem(Product product) {
     _list.remove(product);
     notifyListeners();
   }
 
-  void clearCart() {
+  void clearWishlist() {
     _list.clear();
+    notifyListeners();
+  }
+
+  void removeThis(String id) {
+    _list.removeWhere((element) => element.documentId == id);
     notifyListeners();
   }
 }

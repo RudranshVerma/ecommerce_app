@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/auth/customer_login.dart';
 import 'package:ecommerce_app/auth/supplier_signup.dart';
+
 import 'package:ecommerce_app/providers/cart_provider.dart';
+import 'package:ecommerce_app/providers/wish_provider.dart';
 import 'package:flutter/material.dart';
 import 'auth/customer_signup.dart';
 import 'auth/supplier_login.dart';
@@ -15,9 +17,10 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => Cart())],
-      child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Cart()),
+    ChangeNotifierProvider(create: (_) => Wish()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
