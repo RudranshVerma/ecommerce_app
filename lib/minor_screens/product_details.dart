@@ -11,37 +11,35 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart';
 import '../providers/cart_provider.dart';
 import 'package:collection/collection.dart';
-
+import 'package:badges/badges.dart';
 import '../providers/wish_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic proList;
-  const ProductDetailsScreen({super.key, this.proList});
+  const ProductDetailsScreen({Key? key, required this.proList})
+      : super(key: key);
 
   @override
-  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  // ignore: no_leading_underscores_for_local_identifiers
-
   late final Stream<QuerySnapshot> _prodcutsStream = FirebaseFirestore.instance
-      .collection('products')
+      .collection('proList')
       .where('maincateg', isEqualTo: widget.proList['maincateg'])
       .where('subcateg', isEqualTo: widget.proList['subcateg'])
       .snapshots();
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
-  late List<dynamic> imageList = widget.proList['proimages'];
+  late List<dynamic> imagesList = widget.proList['proimages'];
   @override
   Widget build(BuildContext context) {
+    var onSale = widget.proList['discount'];
     var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
-        (product) => product.documentId == widget.proList['proid']);
-
+        (element) => element.documentId == widget.proList['proid']);
     return Material(
       child: SafeArea(
         child: ScaffoldMessenger(
@@ -53,56 +51,59 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FullScreenView(imagesList: imageList),
-                        ),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FullScreenView(
+                                    imagesList: imagesList,
+                                  )));
                     },
-                    child: Stack(children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.45,
-                        child: Swiper(
-                          pagination: const SwiperPagination(
-                              builder: SwiperPagination.fraction),
-                          itemBuilder: (context, index) {
-                            return Image(
-                              image: NetworkImage(imageList[index]),
-                            );
-                          },
-                          itemCount: imageList.length,
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.45,
+                          child: Swiper(
+                            pagination: const SwiperPagination(
+                                builder: SwiperPagination.fraction),
+                            itemBuilder: (context, index) {
+                              return Image(
+                                image: NetworkImage(
+                                  imagesList[index],
+                                ),
+                              );
+                            },
+                            itemCount: imagesList.length,
+                          ),
                         ),
-                      ),
-                      Positioned(
-                          left: 15,
-                          top: 20,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.yellow,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.arrow_back_ios_new,
-                                color: Colors.black,
+                        Positioned(
+                            left: 15,
+                            top: 20,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.yellow,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                               ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          )),
-                      Positioned(
-                          right: 15,
-                          top: 20,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.yellow,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.share,
-                                color: Colors.black,
+                            )),
+                        Positioned(
+                            right: 15,
+                            top: 20,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.yellow,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.share,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {},
                               ),
-                              onPressed: () {},
-                            ),
-                          )),
-                    ]),
+                            ))
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 50),
@@ -122,19 +123,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Row(
                               children: [
                                 const Text(
-                                  'USD',
+                                  'USD  ',
                                   style: TextStyle(
                                       color: Colors.red,
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
                                   widget.proList['price'].toStringAsFixed(2),
-                                  style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
+                                  style: onSale != 0
+                                      ? const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.w600)
+                                      : const TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
                                 ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                onSale != 0
+                                    ? Text(
+                                        ((1 -
+                                                    (widget.proList[
+                                                            'discount'] /
+                                                        100)) *
+                                                widget.proList['price'])
+                                            .toStringAsFixed(2),
+                                        style: const TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      )
+                                    : const Text(''),
                               ],
                             ),
                             IconButton(
@@ -145,14 +170,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       .firstWhereOrNull((product) =>
                                           product.documentId ==
                                           widget.proList['proid']);
-
                                   existingItemWishlist != null
-                                      ? context.read<Wish>().removeThis(
-                                            widget.proList['proid'],
-                                          )
+                                      ? context
+                                          .read<Wish>()
+                                          .removeThis(widget.proList['proid'])
                                       : context.read<Wish>().addWishItem(
                                             widget.proList['proname'],
-                                            widget.proList['price'],
+                                            onSale != 0
+                                                ? ((1 -
+                                                        (widget.proList[
+                                                                'discount'] /
+                                                            100)) *
+                                                    widget.proList['price'])
+                                                : widget.proList['price'],
                                             1,
                                             widget.proList['instock'],
                                             widget.proList['proimages'],
@@ -176,15 +206,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Icons.favorite_outline,
                                         color: Colors.red,
                                         size: 30,
-                                      ))
+                                      )),
                           ],
                         ),
-                        Text(
-                          (widget.proList['instock'].toString()) +
-                              (' pieces  available in stock '),
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.blueGrey),
-                        ),
+                        widget.proList['instock'] == 0
+                            ? const Text(
+                                'this item is out of stock',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.blueGrey),
+                              )
+                            : Text(
+                                (widget.proList['instock'].toString()) +
+                                    (' pieces available in stock'),
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.blueGrey),
+                              ),
                         const ProDetailsHeader(
                           label: '   Item Description   ',
                         ),
@@ -192,13 +228,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           widget.proList['prodesc'],
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blueGrey.shade800,
-                          ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blueGrey.shade800),
                         ),
                         const ProDetailsHeader(
-                          label: '   Similar Items   ',
+                          label: '  Similar Items  ',
                         ),
                         SizedBox(
                           child: StreamBuilder<QuerySnapshot>(
@@ -282,22 +317,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           back: AppBarBackButton(),
                                         )));
                           },
-                          //   icon:Badge(
-                          //           showBadge: context.read<Cart>().getItems.isEmpty
-                          //               ? false
-                          //               : true,
-                          //           padding: const EdgeInsets.all(2),
-                          //           badgeColor: Colors.yellow,
-                          //           badgeContent: Text(
-                          //             context.watch<Cart>().getItems.length.toString(),
-                          //             style: const TextStyle(
-                          //                 fontSize: 16, fontWeight: FontWeight.w600),
-                          //           ),
-                          //           child: const Icon(Icons.shopping_cart),
-                          //         )),
-                          //   ],
-                          // ),
-                          icon: const Icon(Icons.shopping_cart)),
+                          icon: Badge(
+                              showBadge: context.read<Cart>().getItems.isEmpty
+                                  ? false
+                                  : true,
+                              padding: const EdgeInsets.all(2),
+                              badgeColor: Colors.yellow,
+                              badgeContent: Text(
+                                context
+                                    .watch<Cart>()
+                                    .getItems
+                                    .length
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                              child: const Icon(Icons.shopping_cart))),
                     ],
                   ),
                   YellowButton(
@@ -305,20 +340,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ? 'added to cart'
                           : 'ADD TO CART',
                       onPressed: () {
-                        existingItemCart != null
-                            ? MyMessageHandler.showSnackBar(
-                                _scaffoldKey, 'this item already in cart ')
-                            : context.read<Cart>().addItem(
-                                  widget.proList['proname'],
-                                  widget.proList['price'],
-                                  1,
-                                  widget.proList['instock'],
-                                  widget.proList['proimages'],
-                                  widget.proList['proid'],
-                                  widget.proList['sid'],
-                                );
+                        if (widget.proList['instock'] == 0) {
+                          MyMessageHandler.showSnackBar(
+                              _scaffoldKey, 'this item is out of stock');
+                        } else if (existingItemCart != null) {
+                          MyMessageHandler.showSnackBar(
+                              _scaffoldKey, 'this item already in cart');
+                        } else {
+                          context.read<Cart>().addItem(
+                                widget.proList['proname'],
+                                onSale != 0
+                                    ? ((1 -
+                                            (widget.proList['discount'] /
+                                                100)) *
+                                        widget.proList['price'])
+                                    : widget.proList['price'],
+                                1,
+                                widget.proList['instock'],
+                                widget.proList['proimages'],
+                                widget.proList['proid'],
+                                widget.proList['sid'],
+                              );
+                        }
                       },
-                      width: 0.5)
+                      width: 0.55)
                 ],
               ),
             ),
@@ -336,34 +381,35 @@ class ProDetailsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 40,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 60,
-              width: 50,
-              child: Divider(
-                color: Colors.yellow.shade900,
-                thickness: 1,
-              ),
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 40,
+            width: 50,
+            child: Divider(
+              color: Colors.yellow.shade900,
+              thickness: 1,
             ),
-            Text(
-              label,
-              style: TextStyle(
-                  color: Colors.yellow.shade900,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 40,
-              width: 50,
-              child: Divider(
+          ),
+          Text(
+            label,
+            style: TextStyle(
                 color: Colors.yellow.shade900,
-                thickness: 1,
-              ),
-            )
-          ],
-        ));
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 40,
+            width: 50,
+            child: Divider(
+              color: Colors.yellow.shade900,
+              thickness: 1,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

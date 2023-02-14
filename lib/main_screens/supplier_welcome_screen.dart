@@ -240,12 +240,12 @@ class _SupplierWelcomeScreenState extends State<SupplierWelcomeScreen>
                                       _uid = FirebaseAuth
                                           .instance.currentUser!.uid;
                                       await anonymous.doc(_uid).set({
-                                        'name': '',
+                                        'storename': '',
                                         'email': '',
-                                        'profileimage': '',
+                                        'coverimage': '',
                                         'phone': '',
                                         'address': '',
-                                        'cid': _uid,
+                                        'sid': _uid,
                                       });
                                     });
 
@@ -284,7 +284,7 @@ class GoogleFacebookLogin extends StatelessWidget {
         vertical: 8,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onPressed,
         child: Column(
           children: [
             SizedBox(height: 50, width: 50, child: child),
