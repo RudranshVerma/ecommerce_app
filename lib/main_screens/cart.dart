@@ -8,8 +8,9 @@ import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import '../minor_screens/place_order.dart';
 import '../providers/cart_provider.dart';
-import '../widgtes/yellow_button.dart';
+// import '../widgtes/yellow_button.dart';
 
 //nnnnnnnnn
 class CartScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    double total = context.watch<Cart>().totalPrice;
     return Material(
       child: SafeArea(
         child: Scaffold(
@@ -59,32 +61,48 @@ class _CartScreenState extends State<CartScreen> {
           body: context.watch<Cart>().getItems.isNotEmpty
               ? const CartItems()
               : const EmptyCart(),
-          bottomSheet:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Text(
-                    'Total:\$ ',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    context.watch<Cart>().totalPrice.toStringAsFixed(2),
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
-                  ),
-                ],
+          bottomSheet: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Total:\Rs ',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      total.toStringAsFixed(2),
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            YellowButton(
-              width: 0.45,
-              label: 'CHECK OUT',
-              onPressed: () {},
-            )
-          ]),
+              Container(
+                height: 35,
+                width: MediaQuery.of(context).size.width * 0.45,
+                decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(25)),
+                child: MaterialButton(
+                  onPressed: total == 0.0
+                      ? null
+                      : () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PlaceOrderScreen()));
+                        },
+                  child: const Text('CHECK OUT'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

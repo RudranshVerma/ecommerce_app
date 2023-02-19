@@ -159,7 +159,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           processing = false;
           imagesFileList = [];
           mainCategValue = 'select category';
-
           subCategList = [];
           imagesUrlList = [];
         });
@@ -296,7 +295,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                         decimal: true),
                                 decoration: textFormDecoration.copyWith(
                                   labelText: 'price',
-                                  hintText: 'price .. \$',
+                                  hintText: 'price .. \₹',
                                 )),
                           ),
                         ),

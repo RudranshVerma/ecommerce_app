@@ -48,6 +48,7 @@ dependencies:
   font_awesome_flutter: ^10.2.1
   provider: ^6.0.5
   badges: ^2.0.2
+  sn_progress_dialog: ^1.1.3
 
 dev_dependencies:
   flutter_test:
@@ -119,4 +120,3 @@ flutter:
     - family: AkayaTelivigala
       fonts:
         - asset: fonts/AkayaTelivigala-Regular.ttf
-             

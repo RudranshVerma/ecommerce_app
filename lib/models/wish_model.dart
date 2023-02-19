@@ -61,10 +61,11 @@ class WishlistModel extends StatelessWidget {
                               icon: const Icon(Icons.delete_forever)),
                           const SizedBox(width: 10),
                           context.watch<Cart>().getItems.firstWhereOrNull(
-                                      (element) =>
-                                          element.documentId ==
-                                          product.documentId) !=
-                                  null
+                                          (element) =>
+                                              element.documentId ==
+                                              product.documentId) !=
+                                      null ||
+                                  product.qntty == 0
                               // ignore: avoid_print
                               ? const SizedBox()
                               : IconButton(
