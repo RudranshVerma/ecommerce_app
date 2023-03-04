@@ -124,10 +124,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Row(
                               children: [
                                 const Text(
-                                  '  ',
+                                  ' USD ',
                                   style: TextStyle(
                                       color: Colors.red,
-                                      fontSize: 16,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
