@@ -12,7 +12,7 @@ class ManageProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _prodcutsStream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> prodcutsStream = FirebaseFirestore.instance
         .collection('products')
         .where('sid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
@@ -25,7 +25,7 @@ class ManageProducts extends StatelessWidget {
         leading: const AppBarBackButton(),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _prodcutsStream,
+        stream: prodcutsStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');

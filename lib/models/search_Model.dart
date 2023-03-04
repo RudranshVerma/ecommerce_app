@@ -1,9 +1,5 @@
-import 'dart:ffi';
-
 import 'package:ecommerce_app/minor_screens/product_details.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class SearchModel extends StatelessWidget {
   final dynamic e;

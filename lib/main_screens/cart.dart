@@ -69,7 +69,7 @@ class _CartScreenState extends State<CartScreen> {
                 child: Row(
                   children: [
                     const Text(
-                      'Total:\Rs ',
+                      'Total:Rs ',
                       style: TextStyle(fontSize: 18),
                     ),
                     Text(

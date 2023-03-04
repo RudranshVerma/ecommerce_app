@@ -7,9 +7,6 @@ import 'package:ecommerce_app/main_screens/upload_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:provider/provider.dart';
-
-import '../providers/cart_provider.dart';
 
 class SupplierHomeScreen extends StatefulWidget {
   const SupplierHomeScreen({Key? key}) : super(key: key);

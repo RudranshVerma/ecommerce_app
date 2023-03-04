@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../utilities/_animatedCounter.dart' as animation;
+import '../utilities/animated_counter.dart' as animation;
 
 class StaticsModel extends StatelessWidget {
   final String label;
