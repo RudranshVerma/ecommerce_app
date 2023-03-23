@@ -10,8 +10,8 @@ class SupplierOrders extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const AppbarTitle(title: "SupplierOrders"),
         leading: const AppBarBackButton(),
+        title: const AppbarTitle(title: "SupplierOrders"),
       ),
     );
   }
