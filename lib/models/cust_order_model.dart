@@ -1,17 +1,10 @@
-import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class CustomerOrderModel extends StatefulWidget {
+class CustomerOrderModel extends StatelessWidget {
   final dynamic order;
   const CustomerOrderModel({Key? key, required this.order}) : super(key: key);
 
-  @override
-  State<CustomerOrderModel> createState() => _CustomerOrderModelState();
-}
-
-class _CustomerOrderModelState extends State<CustomerOrderModel> {
-  late double rate;
-  late String comment;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,14 +24,14 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                   Container(
                     constraints:
                         const BoxConstraints(maxHeight: 80, maxWidth: 80),
-                    child: Image.network(widget.order['orderimage']),
+                    child: Image.network(order['orderimage']),
                   ),
                   Flexible(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.order['ordername'],
+                        order['ordername'],
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
@@ -52,9 +45,8 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(('₹') +
-                                (widget.order['orderprice']
-                                    .toStringAsFixed(2))),
-                            Text(('x ') + (widget.order['orderqty'].toString()))
+                                (order['orderprice'].toStringAsFixed(2))),
+                            Text(('x ') + (order['orderqty'].toString()))
                           ],
                         ),
                       )
@@ -66,17 +58,14 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('See more..'),
-              Text(widget.order['deliverystatus'])
-            ],
+            children: [const Text('See more..'), Text(order['deliverystatus'])],
           ),
           children: [
             Container(
               // height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: widget.order['deliverystatus'] == 'delivered'
+                  color: order['deliverystatus'] == 'delivered'
                       ? Colors.brown.withOpacity(0.2)
                       : Colors.yellow.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15)),
@@ -85,19 +74,19 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(('Name: ') + (widget.order['custname']),
+                      Text(('Name: ') + (order['custname']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Phone No: ') + (widget.order['phone']),
+                      Text(('Phone No: ') + (order['phone']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Email address: ') + (widget.order['email']),
+                      Text(('Email address: ') + (order['email']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Address: ') + (widget.order['address']),
+                      Text(('Address: ') + (order['address']),
                           style: const TextStyle(fontSize: 15)),
                       Row(
                         children: [
                           const Text(('Payment status: '),
                               style: TextStyle(fontSize: 15)),
-                          Text((widget.order['paymentstatus']),
+                          Text((order['paymentstatus']),
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.purple)),
                         ],
@@ -106,106 +95,27 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                         children: [
                           const Text(('Delivery status: '),
                               style: TextStyle(fontSize: 15)),
-                          Text((widget.order['deliverystatus']),
+                          Text((order['deliverystatus']),
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.green)),
                         ],
                       ),
-                      widget.order['deliverystatus'] == 'shipping'
+                      order['deliverystatus'] == 'shipping'
                           ? Text(
                               ('Estimated Delivery Date: ') +
-                                  (order['deliverydate']),
+                                  (DateFormat('yyyy-MM-dd').format(
+                                          order['deliveryDate'].toDate()))
+                                      .toString(),
                               style: const TextStyle(fontSize: 15))
                           : const Text(''),
-                      widget.order['deliverystatus'] == 'delivered' &&
-                              widget.order['orderreview'] == false
+                      order['deliverystatus'] == 'delivered' &&
+                              order['orderreview'] == false
                           ? TextButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => Material(
-                                          color: Colors.white,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 150),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  RatingBar.builder(
-                                                      initialRating: 1,
-                                                      minRating: 1,
-                                                      allowHalfRating: true,
-                                                      itemBuilder:
-                                                          (context, _) {
-                                                        return const Icon(
-                                                          Icons.star,
-                                                          color: Colors.amber,
-                                                        );
-                                                      },
-                                                      onRatingUpdate: (value) {
-                                                        rate = value;
-                                                      }),
-                                                  TextField(
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            'Enter your review',
-                                                        border: OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    15)),
-                                                        enabledBorder: OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    width: 1),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    15)),
-                                                        focusedBorder: OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    color: Colors
-                                                                        .amber,
-                                                                    width: 2),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(15))),
-                                                    onChanged: (value) {
-                                                      comment = value;
-                                                    },
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      YellowButton(
-                                                          label: 'cancel',
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          width: 0.3),
-                                                      const SizedBox(width: 20),
-                                                      YellowButton(
-                                                          label: 'Ok',
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          width: 0.3),
-                                                    ],
-                                                  )
-                                                ]),
-                                          ),
-                                        ));
-                              },
+                              onPressed: () {},
                               child: const Text('Write Review'))
                           : const Text(''),
-                      widget.order['deliverystatus'] == 'delivered' &&
-                              widget.order['orderreview'] == true
+                      order['deliverystatus'] == 'delivered' &&
+                              order['orderreview'] == true
                           ? Row(
                               children: const [
                                 Icon(
