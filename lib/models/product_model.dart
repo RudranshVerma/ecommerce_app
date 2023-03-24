@@ -76,10 +76,9 @@ class _ProductModelState extends State<ProductModel> {
                                 widget.products['price'].toStringAsFixed(2),
                                 style: onSale != 0
                                     ? const TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 13,
+                                        color: Colors.grey,
+                                        fontSize: 11,
                                         decoration: TextDecoration.lineThrough,
-                                        decorationColor: Colors.black,
                                         fontWeight: FontWeight.w600)
                                     : const TextStyle(
                                         color: Colors.red,
@@ -93,13 +92,13 @@ class _ProductModelState extends State<ProductModel> {
                                   ? Text(
                                       ((1 - (onSale / 100)) *
                                               widget.products['price'])
-                                          .toString(),
+                                          .toStringAsFixed(2),
                                       style: const TextStyle(
                                           color: Colors.red,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
                                     )
-                                  : const Text(''),
+                                  : const Text(' ')
                             ],
                           ),
                           widget.products['sid'] ==
@@ -160,7 +159,7 @@ class _ProductModelState extends State<ProductModel> {
             ),
             onSale != 0
                 ? Positioned(
-                    top: 20,
+                    top: 30,
                     left: 0,
                     child: Container(
                       height: 25,
@@ -170,12 +169,12 @@ class _ProductModelState extends State<ProductModel> {
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               bottomRight: Radius.circular(15))),
-                      child: Center(
-                        child: Text('Save ${onSale.toString()}%'),
-                      ),
+                      child: Center(child: Text('Save ${onSale.toString()} %')),
                     ),
                   )
-                : Container(color: Colors.transparent)
+                : Container(
+                    color: Colors.transparent,
+                  )
           ],
         ),
       ),

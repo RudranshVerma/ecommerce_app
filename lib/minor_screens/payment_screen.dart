@@ -1,3 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
@@ -7,8 +11,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
 
 import '../providers/cart_provider.dart';
+import '../providers/stripe_id.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -318,7 +325,6 @@ class PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ));
                           } else if (selectedValue == 2) {
-                            print('visa');
                           } else if (selectedValue == 3) {
                             print('paypal');
                           }

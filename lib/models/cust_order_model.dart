@@ -1,10 +1,17 @@
+import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class CustomerOrderModel extends StatelessWidget {
+class CustomerOrderModel extends StatefulWidget {
   final dynamic order;
   const CustomerOrderModel({Key? key, required this.order}) : super(key: key);
 
+  @override
+  State<CustomerOrderModel> createState() => _CustomerOrderModelState();
+}
+
+class _CustomerOrderModelState extends State<CustomerOrderModel> {
+  late double rate;
+  late String comment;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,14 +31,14 @@ class CustomerOrderModel extends StatelessWidget {
                   Container(
                     constraints:
                         const BoxConstraints(maxHeight: 80, maxWidth: 80),
-                    child: Image.network(order['orderimage']),
+                    child: Image.network(widget.order['orderimage']),
                   ),
                   Flexible(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        order['ordername'],
+                        widget.order['ordername'],
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
@@ -45,8 +52,9 @@ class CustomerOrderModel extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(('₹') +
-                                (order['orderprice'].toStringAsFixed(2))),
-                            Text(('x ') + (order['orderqty'].toString()))
+                                (widget.order['orderprice']
+                                    .toStringAsFixed(2))),
+                            Text(('x ') + (widget.order['orderqty'].toString()))
                           ],
                         ),
                       )
@@ -58,14 +66,17 @@ class CustomerOrderModel extends StatelessWidget {
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text('See more..'), Text(order['deliverystatus'])],
+            children: [
+              const Text('See more..'),
+              Text(widget.order['deliverystatus'])
+            ],
           ),
           children: [
             Container(
               // height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: order['deliverystatus'] == 'delivered'
+                  color: widget.order['deliverystatus'] == 'delivered'
                       ? Colors.brown.withOpacity(0.2)
                       : Colors.yellow.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15)),
@@ -74,19 +85,19 @@ class CustomerOrderModel extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(('Name: ') + (order['custname']),
+                      Text(('Name: ') + (widget.order['custname']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Phone No: ') + (order['phone']),
+                      Text(('Phone No: ') + (widget.order['phone']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Email address: ') + (order['email']),
+                      Text(('Email address: ') + (widget.order['email']),
                           style: const TextStyle(fontSize: 15)),
-                      Text(('Address: ') + (order['address']),
+                      Text(('Address: ') + (widget.order['address']),
                           style: const TextStyle(fontSize: 15)),
                       Row(
                         children: [
                           const Text(('Payment status: '),
                               style: TextStyle(fontSize: 15)),
-                          Text((order['paymentstatus']),
+                          Text((widget.order['paymentstatus']),
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.purple)),
                         ],
@@ -95,27 +106,106 @@ class CustomerOrderModel extends StatelessWidget {
                         children: [
                           const Text(('Delivery status: '),
                               style: TextStyle(fontSize: 15)),
-                          Text((order['deliverystatus']),
+                          Text((widget.order['deliverystatus']),
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.green)),
                         ],
                       ),
-                      order['deliverystatus'] == 'shipping'
+                      widget.order['deliverystatus'] == 'shipping'
                           ? Text(
                               ('Estimated Delivery Date: ') +
-                                  (DateFormat('yyyy-MM-dd').format(
-                                          order['deliveryDate'].toDate()))
-                                      .toString(),
+                                  (order['deliverydate']),
                               style: const TextStyle(fontSize: 15))
                           : const Text(''),
-                      order['deliverystatus'] == 'delivered' &&
-                              order['orderreview'] == false
+                      widget.order['deliverystatus'] == 'delivered' &&
+                              widget.order['orderreview'] == false
                           ? TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => Material(
+                                          color: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 150),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  RatingBar.builder(
+                                                      initialRating: 1,
+                                                      minRating: 1,
+                                                      allowHalfRating: true,
+                                                      itemBuilder:
+                                                          (context, _) {
+                                                        return const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        );
+                                                      },
+                                                      onRatingUpdate: (value) {
+                                                        rate = value;
+                                                      }),
+                                                  TextField(
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            'Enter your review',
+                                                        border: OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    15)),
+                                                        enabledBorder: OutlineInputBorder(
+                                                            borderSide:
+                                                                const BorderSide(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    width: 1),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    15)),
+                                                        focusedBorder: OutlineInputBorder(
+                                                            borderSide:
+                                                                const BorderSide(
+                                                                    color: Colors
+                                                                        .amber,
+                                                                    width: 2),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(15))),
+                                                    onChanged: (value) {
+                                                      comment = value;
+                                                    },
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      YellowButton(
+                                                          label: 'cancel',
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          width: 0.3),
+                                                      const SizedBox(width: 20),
+                                                      YellowButton(
+                                                          label: 'Ok',
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          width: 0.3),
+                                                    ],
+                                                  )
+                                                ]),
+                                          ),
+                                        ));
+                              },
                               child: const Text('Write Review'))
                           : const Text(''),
-                      order['deliverystatus'] == 'delivered' &&
-                              order['orderreview'] == true
+                      widget.order['deliverystatus'] == 'delivered' &&
+                              widget.order['orderreview'] == true
                           ? Row(
                               children: const [
                                 Icon(
