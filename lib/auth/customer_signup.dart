@@ -98,7 +98,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, '/customer_login');
+          await Future.delayed(const Duration(microseconds: 100)).whenComplete(
+              () => Navigator.pushReplacementNamed(context, '/customer_login'));
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {

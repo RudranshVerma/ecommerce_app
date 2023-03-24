@@ -13,7 +13,8 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import 'package:collection/collection.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
+// package:badges/src/badge.dart
 import '../providers/wish_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -123,10 +124,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Row(
                               children: [
                                 const Text(
-                                  '  ',
+                                  ' USD ',
                                   style: TextStyle(
                                       color: Colors.red,
-                                      fontSize: 16,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
@@ -317,12 +318,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           back: AppBarBackButton(),
                                         )));
                           },
-                          icon: Badge(
+                          icon: badges.Badge(
                               showBadge: context.read<Cart>().getItems.isEmpty
                                   ? false
                                   : true,
-                              padding: const EdgeInsets.all(2),
-                              badgeColor: Colors.yellow,
+                              badgeStyle: const badges.BadgeStyle(
+                                  padding: EdgeInsets.all(2),
+                                  badgeColor: Colors.yellow),
                               badgeContent: Text(
                                 context
                                     .watch<Cart>()

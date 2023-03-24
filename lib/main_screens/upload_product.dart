@@ -295,7 +295,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                         decimal: true),
                                 decoration: textFormDecoration.copyWith(
                                   labelText: 'price',
-                                  hintText: 'price .. \₹',
+                                  hintText: 'price .. ₹',
                                 )),
                           ),
                         ),

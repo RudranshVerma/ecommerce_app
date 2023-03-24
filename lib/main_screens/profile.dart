@@ -286,21 +286,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         icon: Icons.logout,
                                         onPressed: () async {
                                           MyAlertDialog.showMyDialog(
-                                            context: context,
-                                            title: 'Log Out',
-                                            content:
-                                                'Are you sure to log out ?',
-                                            tabNo: () {
-                                              Navigator.pop(context);
-                                            },
-                                            tabYes: () async {
-                                              await FirebaseAuth.instance
-                                                  .signOut();
-                                              Navigator.pop(context);
-                                              Navigator.pushReplacementNamed(
-                                                  context, '/welcomescreen');
-                                            },
-                                          );
+                                              context: context,
+                                              title: 'Log Out',
+                                              content:
+                                                  'Are you sure to log out ?',
+                                              tabNo: () {
+                                                Navigator.pop(context);
+                                              },
+                                              tabYes: () async {
+                                                await FirebaseAuth.instance
+                                                    .signOut();
+                                                await Future.delayed(
+                                                        const Duration(
+                                                            microseconds: 100))
+                                                    .whenComplete(() {
+                                                  Navigator.pop(context);
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context,
+                                                          '/welcomescreen');
+                                                });
+                                              });
                                         },
                                       ),
                                     ]),

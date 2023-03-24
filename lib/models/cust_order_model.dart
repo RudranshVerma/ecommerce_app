@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CustomerOrderModel extends StatefulWidget {
   final dynamic order;
@@ -115,7 +114,7 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                       widget.order['deliverystatus'] == 'shipping'
                           ? Text(
                               ('Estimated Delivery Date: ') +
-                                  (widget.order['deliverydate']),
+                                  (order['deliverydate']),
                               style: const TextStyle(fontSize: 15))
                           : const Text(''),
                       widget.order['deliverystatus'] == 'delivered' &&
