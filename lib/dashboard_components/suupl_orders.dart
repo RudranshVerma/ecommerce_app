@@ -9,13 +9,6 @@ class SupplierOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: const AppBarBackButton(),
-        title: const AppbarTitle(title: "SupplierOrders"),
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -38,7 +31,6 @@ class SupplierOrders extends StatelessWidget {
           Shipping(),
           Delivered(),
         ]),
->>>>>>> c3c9564492cb27b2e1a753b4bb976c63e832a3f7
       ),
     );
   }
