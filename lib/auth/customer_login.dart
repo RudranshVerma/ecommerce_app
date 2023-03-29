@@ -19,6 +19,10 @@ class _CustomerLoginState extends State<CustomerLogin> {
       GlobalKey<ScaffoldMessengerState>();
   bool passwordVisible = false;
 
+  void navigate() {
+    Navigator.pushReplacementNamed(context, '/customer_home');
+  }
+
   void LogIn() async {
     setState(() {
       processing = true;
@@ -28,7 +32,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         _formKey.currentState!.reset();
-        Navigator.pushReplacementNamed(context, '/customer_home');
+        navigate();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {
