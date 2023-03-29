@@ -8,7 +8,7 @@ import 'package:ecommerce_app/dashboard_components/manage_products.dart';
 import 'package:ecommerce_app/dashboard_components/supp_balance.dart';
 import 'package:ecommerce_app/dashboard_components/supp_statics.dart';
 import 'package:ecommerce_app/dashboard_components/suupl_orders.dart';
-import 'package:ecommerce_app/main_screens/visit_store.dart';
+import 'package:ecommerce_app/minor_screens/visit_store.dart';
 import 'package:ecommerce_app/widgtes/alert_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

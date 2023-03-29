@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 
+import '../minor_screens/edit_product.dart';
+
 class ProductModel extends StatefulWidget {
   final dynamic products;
   const ProductModel({Key? key, required this.products}) : super(key: key);
@@ -104,7 +106,14 @@ class _ProductModelState extends State<ProductModel> {
                           widget.products['sid'] ==
                                   FirebaseAuth.instance.currentUser!.uid
                               ? IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditProduct(
+                                                  items: widget.products,
+                                                )));
+                                  },
                                   icon: const Icon(
                                     Icons.edit,
                                     color: Colors.red,

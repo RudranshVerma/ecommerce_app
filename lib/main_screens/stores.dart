@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_app/main_screens/visit_store.dart';
+import 'package:ecommerce_app/minor_screens/visit_store.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import "package:flutter/material.dart";
 
