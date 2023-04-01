@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/auth/customer_login.dart';
 import 'package:ecommerce_app/auth/supplier_signup.dart';
-
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/stripe_id.dart';
 import 'package:ecommerce_app/providers/wish_provider.dart';
@@ -15,7 +14,6 @@ import 'main_screens/supplier_welcome_screen.dart';
 import 'main_screens/welcomescreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
