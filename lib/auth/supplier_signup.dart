@@ -1,40 +1,43 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/providers/auth_repo.dart';
+import 'package:ecommerce_app/widgtes/auth_widgets.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../widgtes/auth_widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SupplierRegister extends StatefulWidget {
-  const SupplierRegister({super.key});
+  const SupplierRegister({Key? key}) : super(key: key);
 
   @override
   State<SupplierRegister> createState() => _SupplierRegisterState();
 }
 
 class _SupplierRegisterState extends State<SupplierRegister> {
-  late String storeLogo;
   late String storeName;
   late String email;
   late String password;
+  late String storeLogo;
   late String _uid;
   bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   bool passwordVisible = false;
-  dynamic _pickedImageError;
+
   final ImagePicker _picker = ImagePicker();
 
   XFile? _imageFile;
+  dynamic _pickedImageError;
+
   CollectionReference suppliers =
       FirebaseFirestore.instance.collection('suppliers');
+
   void _pickImageFromCamera() async {
     try {
       final pickedImage = await _picker.pickImage(
@@ -78,20 +81,27 @@ class _SupplierRegisterState extends State<SupplierRegister> {
     if (_formKey.currentState!.validate()) {
       if (_imageFile != null) {
         try {
-          await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: password);
+          await AuthRepo.singUpWithEmailAndPassword(email, password);
+
+          AuthRepo.sendEmailVerification();
+
           firebase_storage.Reference ref = firebase_storage
               .FirebaseStorage.instance
               .ref('supp-images/$email.jpg');
+
           await ref.putFile(File(_imageFile!.path));
-          _uid = FirebaseAuth.instance.currentUser!.uid;
+          _uid = AuthRepo.uid;
+
           storeLogo = await ref.getDownloadURL();
+
+          AuthRepo.updateUserName(storeName);
+          AuthRepo.updateProfileImage(storeLogo);
+
           await suppliers.doc(_uid).set({
             'storename': storeName,
             'email': email,
             'storelogo': storeLogo,
             'phone': '',
-            'address': '',
             'sid': _uid,
             'coverimage': '',
           });
@@ -99,52 +109,52 @@ class _SupplierRegisterState extends State<SupplierRegister> {
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, '/supplier_login');
+
+          await Future.delayed(const Duration(milliseconds: 100))
+              .whenComplete(() {
+            Navigator.of(context).pushReplacementNamed('/supplier_login');
+          });
         } on FirebaseAuthException catch (e) {
+          setState(() {
+            processing = false;
+          });
+
+          MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
+
+          /*  setState(() {
+            processing = false;
+          });
+
           if (e.code == 'weak-password') {
             setState(() {
               processing = false;
             });
             MyMessageHandler.showSnackBar(
-              _scaffoldKey,
-              'The password provided is too weak.',
-            );
-            print('The password provided is too weak.');
+                _scaffoldKey, 'The password provided is too weak.');
           } else if (e.code == 'email-already-in-use') {
             setState(() {
               processing = false;
             });
             MyMessageHandler.showSnackBar(
-              _scaffoldKey,
-              'The account already exists for that email.',
-            );
-
-            print('The account already exists for that email.');
-          }
+                _scaffoldKey, 'The account already exists for that email.');
+          } */
         }
       } else {
         setState(() {
           processing = false;
         });
-        MyMessageHandler.showSnackBar(
-          _scaffoldKey,
-          'please pick image first',
-        );
+        MyMessageHandler.showSnackBar(_scaffoldKey, 'please pick image first');
       }
     } else {
       setState(() {
         processing = false;
       });
-      MyMessageHandler.showSnackBar(
-        _scaffoldKey,
-        'please fill all fields',
-      );
+      MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // var imageFile = _imageFile;
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
@@ -161,6 +171,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                     children: [
                       const AuthHeaderLabel(
                         headerlabel: 'Sign Up',
+                        headerLabel: 'Sign Up',
                       ),
                       Row(
                         children: [
@@ -211,7 +222,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                                     _pickImageFromGallery();
                                   },
                                 ),
-                              ),
+                              )
                             ],
                           )
                         ],
@@ -219,43 +230,30 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your full name';
-                              }
-                              return null;
-                            },
-                            onChanged: ((value) {
-                              storeName = value;
-                            }),
-                            // controller: _namecontroller,
-                            decoration: textFormDecoration.copyWith(
-                              labelText: 'Full Name',
-                              hintText: 'Enter Your Full Name',
-                            )),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your full name';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            storeName = value;
+                          },
+                          decoration: textFormDecoration.copyWith(
+                            labelText: 'Full Name',
+                            hintText: 'Enter your Full Name',
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter your email',
-                              );
-                              return 'please enter your email';
+                              return 'please enter your email ';
                             } else if (value.isValidEmail() == false) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter valid email',
-                              );
                               return 'invalid email';
                             } else if (value.isValidEmail() == true) {
-                              //   MyMessageHandler.showSnackBar(
-                              //     _scaffoldKey,
-                              //     'your email is valid',
-                              //   );
-                              // }
                               return null;
                             }
                             return null;
@@ -263,61 +261,62 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                           onChanged: (value) {
                             email = value;
                           },
-                          //controller: _emailcontroller,
                           keyboardType: TextInputType.emailAddress,
                           decoration: textFormDecoration.copyWith(
                             labelText: 'Email Address',
-                            hintText: 'Enter Your email ',
+                            hintText: 'Enter your email',
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your password';
-                              }
-                              return null;
-                            },
-                            onChanged: ((value) {
-                              password = value;
-                            }),
-                            //controller: _passwordcontroller,
-                            obscureText: passwordVisible,
-                            decoration: textFormDecoration.copyWith(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      passwordVisible = !passwordVisible;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Colors.purple,
-                                  )),
-                              labelText: 'Password',
-                              hintText: 'Enter Your Password',
-                            )),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your password';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          obscureText: passwordVisible,
+                          decoration: textFormDecoration.copyWith(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.purple,
+                                )),
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
+                          ),
+                        ),
                       ),
                       HaveAccount(
-                        haveAccount: 'Already have an account',
-                        actionLabel: 'Log In ',
+                        haveAccount: 'already have account? ',
+                        actionLabel: 'Log In',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                               context, '/supplier_login');
                         },
                       ),
                       processing == true
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(
+                              color: Colors.purple,
+                            )
                           : AuthMainButton(
-                              mainButtonLabel: 'Sign up',
+                              mainButtonLabel: 'Sign Up',
                               onPressed: () {
                                 signUp();
                               },
-                            )
+                            ),
                     ],
                   ),
                 ),

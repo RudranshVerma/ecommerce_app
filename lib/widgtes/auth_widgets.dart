@@ -68,7 +68,8 @@ class HaveAccount extends StatelessWidget {
 
 class AuthHeaderLabel extends StatelessWidget {
   final String headerlabel;
-  const AuthHeaderLabel({Key? key, required this.headerlabel})
+  const AuthHeaderLabel(
+      {Key? key, required this.headerlabel, required String headerLabel})
       : super(key: key);
 
   @override

@@ -1,5 +1,3 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, library_private_types_in_public_api
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +22,7 @@ class _VisitStoreState extends State<VisitStore> {
   Widget build(BuildContext context) {
     CollectionReference suppliers =
         FirebaseFirestore.instance.collection('suppliers');
+    // ignore: no_leading_underscores_for_local_identifiers
     final Stream<QuerySnapshot> _prodcutsStream = FirebaseFirestore.instance
         .collection('products')
         .where('sid', isEqualTo: widget.suppId)
@@ -189,7 +188,7 @@ class _VisitStoreState extends State<VisitStore> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
-                        crossAxisCount: 2,
+                        crossAxisCount: 1,
                         itemBuilder: (context, index) {
                           return ProductModel(
                             products: snapshot.data!.docs[index],

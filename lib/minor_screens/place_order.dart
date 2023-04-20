@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/customers_screens/add_address.dart';
+import 'package:ecommerce_app/customers_screens/address_book.dart';
 import 'package:ecommerce_app/minor_screens/payment_screen.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
@@ -27,6 +29,10 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
       .limit(1)
       .snapshots();
 
+  late String name;
+  late String phone;
+  late String address;
+
   @override
   Widget build(BuildContext context) {
     double totalPrice = context.watch<Cart>().totalPrice;
@@ -45,19 +51,19 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
             );
           }
 
-          if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-                child: Text(
-              'This category \n\n has no items yet !',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 26,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Acme',
-                  letterSpacing: 1.5),
-            ));
-          }
+          // if (snapshot.data!.docs.isEmpty) {
+          //   return const Center(
+          //       child: Text(
+          //     'This category \n\n has no items yet !',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //         fontSize: 26,
+          //         color: Colors.blueGrey,
+          //         fontWeight: FontWeight.bold,
+          //         fontFamily: 'Acme',
+          //         letterSpacing: 1.5),
+          //   ));
+          // }
           // return Text("Full Name: ${data['full_name']} ${data['last_name']}");
           return Material(
             color: Colors.grey.shade200,
@@ -76,47 +82,95 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 60),
                   child: Column(
                     children: [
-                      ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            var customer = snapshot.data!.docs[index];
-                            return Container(
-                              height: 120,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 16),
-                                child: ListTile(
-                                  title: SizedBox(
-                                    height: 50,
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              '${customer['firstname']} - ${customer['lastname']}'),
-                                          Text(customer['phone'])
-                                        ]),
-                                  ),
-                                  subtitle: SizedBox(
-                                    height: 70,
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              'city/state: ${customer['city']} ${customer['state']}'),
-                                          Text(
-                                              'country:    ${customer['country']}')
-                                        ]),
-                                  ),
-                                ),
+                      snapshot.data!.docs.isEmpty
+                          ? GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddAddress()));
+                              },
+                              child: Container(
+                                height: 120,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 16),
+                                    child: Center(
+                                      child: Text(
+                                        'set your Address',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: 'Acme',
+                                            letterSpacing: 1.5,
+                                            color: Colors.blueGrey),
+                                      ),
+                                    )),
                               ),
-                            );
-                          }),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddressBook()));
+                              },
+                              child: Container(
+                                height: 120,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 16),
+                                    child: ListView.builder(
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder: (context, index) {
+                                          var customer =
+                                              snapshot.data!.docs[index];
+                                          name = customer['firstname'] +
+                                              customer['lastname'];
+                                          phone = customer['phone'];
+                                          address = customer['country'] +
+                                              ' - ' +
+                                              customer['state'] +
+                                              ' - ' +
+                                              customer['city'];
+                                          return ListTile(
+                                            title: SizedBox(
+                                              height: 50,
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        '${customer['firstname']} - ${customer['lastname']}'),
+                                                    Text(customer['phone'])
+                                                  ]),
+                                            ),
+                                            subtitle: SizedBox(
+                                              height: 70,
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'city/state: ${customer['city']} ${customer['state']}'),
+                                                    Text(
+                                                        'country:    ${customer['country']}')
+                                                  ]),
+                                            ),
+                                          );
+                                        })),
+                              ),
+                            ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -219,12 +273,24 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     child: YellowButton(
                       label: 'Confirm ₹ ${totalPrice.toStringAsFixed(2)} ',
                       width: 1,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PaymentScreen()));
-                      },
+                      onPressed: snapshot.data!.docs.isEmpty
+                          ? () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AddAddress()));
+                            }
+                          : () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                            name: name,
+                                            phone: phone,
+                                            address: address,
+                                          )));
+                            },
                     ),
                   ),
                 ),
