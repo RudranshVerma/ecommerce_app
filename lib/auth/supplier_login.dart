@@ -1,11 +1,16 @@
-// ignore_for_file: avoid_print, unused_label, use_build_context_synchronously, non_constant_identifier_names
-import 'package:ecommerce_app/widgtes/snackbar.dart';
+// ignore_for_file: avoid_print
+
+import 'package:ecommerce_app/providers/auth_repo.dart';
+import 'package:ecommerce_app/widgtes/auth_widgets.dart';
+import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../widgtes/auth_widgets.dart';
+
+import '../widgtes/snackbar.dart';
 
 class SupplierLogin extends StatefulWidget {
-  const SupplierLogin({super.key});
+  const SupplierLogin({Key? key}) : super(key: key);
+
   @override
   State<SupplierLogin> createState() => _SupplierLoginState();
 }
@@ -18,48 +23,49 @@ class _SupplierLoginState extends State<SupplierLogin> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   bool passwordVisible = false;
+  bool sendEmailVeridication = false;
 
-  void LogIn() async {
+  void logIn() async {
     setState(() {
       processing = true;
     });
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        _formKey.currentState!.reset();
-        Navigator.pushReplacementNamed(context, '/supplier_home');
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
+        await AuthRepo.signInWithEmailAndPassword(email, password);
+
+        await AuthRepo.reloadUserData();
+        if (await AuthRepo.checkEmailVerification()) {
+          _formKey.currentState!.reset();
+
+          await Future.delayed(const Duration(milliseconds: 100))
+              .whenComplete(() {
+            Navigator.of(context).pushReplacementNamed('/supplier_home');
+          });
+        } else {
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, 'please check your inbox');
           setState(() {
             processing = false;
+            sendEmailVeridication = true;
           });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, 'No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-            _scaffoldKey,
-            'Wrong password provided for that user.',
-          );
         }
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          processing = false;
+        });
+
+        MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
       }
     } else {
       setState(() {
         processing = false;
       });
-      MyMessageHandler.showSnackBar(
-        _scaffoldKey,
-        'please fill all fields',
-      );
+      MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // var imageFile = _imageFile;
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
@@ -77,30 +83,41 @@ class _SupplierLoginState extends State<SupplierLogin> {
                     children: [
                       const AuthHeaderLabel(
                         headerlabel: 'Log In',
+                        headerLabel: 'Log In',
                       ),
-                      const SizedBox(height: 50),
+                      SizedBox(
+                        height: 50,
+                        child: sendEmailVeridication == true
+                            ? Center(
+                                child: YellowButton(
+                                    label: 'Resend Email Verification',
+                                    onPressed: () async {
+                                      try {
+                                        await FirebaseAuth.instance.currentUser!
+                                            .sendEmailVerification();
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                      Future.delayed(const Duration(seconds: 3))
+                                          .whenComplete(() {
+                                        setState(() {
+                                          sendEmailVeridication = false;
+                                        });
+                                      });
+                                    },
+                                    width: 0.6),
+                              )
+                            : const SizedBox(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter your email',
-                              );
-                              return 'please enter your email';
+                              return 'please enter your email ';
                             } else if (value.isValidEmail() == false) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter valid email',
-                              );
                               return 'invalid email';
                             } else if (value.isValidEmail() == true) {
-                              //   MyMessageHandler.showSnackBar(
-                              //     _scaffoldKey,
-                              //     'your email is valid',
-                              //   );
-                              // }
                               return null;
                             }
                             return null;
@@ -108,49 +125,54 @@ class _SupplierLoginState extends State<SupplierLogin> {
                           onChanged: (value) {
                             email = value;
                           },
-                          //controller: _emailcontroller,
                           keyboardType: TextInputType.emailAddress,
                           decoration: textFormDecoration.copyWith(
                             labelText: 'Email Address',
-                            hintText: 'Enter Your email ',
+                            hintText: 'Enter your email',
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your password';
-                              }
-                              return null;
-                            },
-                            onChanged: ((value) {
-                              password = value;
-                            }),
-                            //controller: _passwordcontroller,
-                            obscureText: passwordVisible,
-                            decoration: textFormDecoration.copyWith(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      passwordVisible = !passwordVisible;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Colors.purple,
-                                  )),
-                              labelText: 'Password',
-                              hintText: 'Enter Your Password',
-                            )),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your password';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          obscureText: passwordVisible,
+                          decoration: textFormDecoration.copyWith(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.purple,
+                                )),
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
+                          ),
+                        ),
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            /*       Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPassword())); */
+                          },
                           child: const Text(
-                            'Forget Password ? ',
+                            'Forget Password ?',
                             style: TextStyle(
                                 fontSize: 18, fontStyle: FontStyle.italic),
                           )),
@@ -170,9 +192,9 @@ class _SupplierLoginState extends State<SupplierLogin> {
                           : AuthMainButton(
                               mainButtonLabel: 'Log In',
                               onPressed: () {
-                                LogIn();
+                                logIn();
                               },
-                            )
+                            ),
                     ],
                   ),
                 ),

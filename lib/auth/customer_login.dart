@@ -1,16 +1,73 @@
-// ignore_for_file: avoid_print, unused_label, use_build_context_synchronously, non_constant_identifier_names
+// ignore_for_file: avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/minor_screens/forgot_password.dart';
+import 'package:ecommerce_app/widgtes/auth_widgets.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../widgtes/auth_widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../providers/auth_repo.dart';
 
 class CustomerLogin extends StatefulWidget {
-  const CustomerLogin({super.key});
+  const CustomerLogin({Key? key}) : super(key: key);
+
   @override
   State<CustomerLogin> createState() => _CustomerLoginState();
 }
 
 class _CustomerLoginState extends State<CustomerLogin> {
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
+
+  Future<bool> checkIfDocExists(String docId) async {
+    try {
+      var doc = await customers.doc(docId).get();
+      return doc.exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool docExists = false;
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .whenComplete(() async {
+      User user = FirebaseAuth.instance.currentUser!;
+      print(googleUser!.id);
+      print(FirebaseAuth.instance.currentUser!.uid);
+      print(googleUser);
+      print(user);
+
+      docExists = await checkIfDocExists(user.uid);
+
+      docExists == false
+          ? await customers.doc(user.uid).set({
+              'name': user.displayName,
+              'email': user.email,
+              'profileimage': user.photoURL,
+              'phone': '',
+              'address': '',
+              'cid': user.uid
+            }).then((value) => navigate())
+          : navigate();
+    });
+  }
+
   late String email;
   late String password;
   bool processing = false;
@@ -23,47 +80,42 @@ class _CustomerLoginState extends State<CustomerLogin> {
     Navigator.pushReplacementNamed(context, '/customer_home');
   }
 
-  void LogIn() async {
+  void logIn() async {
     setState(() {
       processing = true;
     });
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        _formKey.currentState!.reset();
-        navigate();
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
+        await AuthRepo.signInWithEmailAndPassword(email, password);
+
+        await AuthRepo.reloadUserData();
+        if (await AuthRepo.checkEmailVerification()) {
+          _formKey.currentState!.reset();
+
+          navigate();
+        } else {
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, 'please check your inbox');
           setState(() {
             processing = false;
           });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, 'No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-            _scaffoldKey,
-            'Wrong password provided for that user.',
-          );
         }
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          processing = false;
+        });
+        MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
       }
     } else {
       setState(() {
         processing = false;
       });
-      MyMessageHandler.showSnackBar(
-        _scaffoldKey,
-        'please fill all fields',
-      );
+      MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // var imageFile = _imageFile;
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
@@ -80,31 +132,21 @@ class _CustomerLoginState extends State<CustomerLogin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const AuthHeaderLabel(
+                        headerLabel: 'Log In',
                         headerlabel: 'Log In',
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(
+                        height: 50,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter your email',
-                              );
-                              return 'please enter your email';
+                              return 'please enter your email ';
                             } else if (value.isValidEmail() == false) {
-                              MyMessageHandler.showSnackBar(
-                                _scaffoldKey,
-                                'Please enter valid email',
-                              );
                               return 'invalid email';
                             } else if (value.isValidEmail() == true) {
-                              //   MyMessageHandler.showSnackBar(
-                              //     _scaffoldKey,
-                              //     'your email is valid',
-                              //   );
-                              // }
                               return null;
                             }
                             return null;
@@ -112,49 +154,54 @@ class _CustomerLoginState extends State<CustomerLogin> {
                           onChanged: (value) {
                             email = value;
                           },
-                          //controller: _emailcontroller,
                           keyboardType: TextInputType.emailAddress,
                           decoration: textFormDecoration.copyWith(
                             labelText: 'Email Address',
-                            hintText: 'Enter Your email ',
+                            hintText: 'Enter your email',
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your password';
-                              }
-                              return null;
-                            },
-                            onChanged: ((value) {
-                              password = value;
-                            }),
-                            //controller: _passwordcontroller,
-                            obscureText: passwordVisible,
-                            decoration: textFormDecoration.copyWith(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      passwordVisible = !passwordVisible;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Colors.purple,
-                                  )),
-                              labelText: 'Password',
-                              hintText: 'Enter Your Password',
-                            )),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your password';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          obscureText: passwordVisible,
+                          decoration: textFormDecoration.copyWith(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.purple,
+                                )),
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
+                          ),
+                        ),
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPassword()));
+                          },
                           child: const Text(
-                            'Forget Password ? ',
+                            'Forget Password ?',
                             style: TextStyle(
                                 fontSize: 18, fontStyle: FontStyle.italic),
                           )),
@@ -174,15 +221,74 @@ class _CustomerLoginState extends State<CustomerLogin> {
                           : AuthMainButton(
                               mainButtonLabel: 'Log In',
                               onPressed: () {
-                                LogIn();
+                                logIn();
                               },
-                            )
+                            ),
+                      divider(),
+                      googleLogInButton(),
                     ],
                   ),
                 ),
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget divider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          SizedBox(
+            width: 80,
+            child: Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+          ),
+          Text(
+            '  Or  ',
+            style: TextStyle(color: Colors.grey),
+          ),
+          SizedBox(
+            width: 80,
+            child: Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget googleLogInButton() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(50, 50, 50, 20),
+      child: Material(
+        elevation: 3,
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(6),
+        child: MaterialButton(
+          onPressed: () {
+            signInWithGoogle();
+          },
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Icon(
+                  FontAwesomeIcons.google,
+                  color: Colors.red,
+                ),
+                Text(
+                  'Sign In With Google',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                )
+              ]),
         ),
       ),
     );
