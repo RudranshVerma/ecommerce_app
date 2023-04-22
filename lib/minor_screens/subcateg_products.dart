@@ -10,8 +10,14 @@ import '../widgtes/appbar_widgets.dart';
 class SubCategProducts extends StatefulWidget {
   final String maincategName;
   final String subcategName;
-  const SubCategProducts(
-      {super.key, required this.maincategName, required this.subcategName});
+  final bool fromOnBoarding;
+
+  const SubCategProducts({
+    this.fromOnBoarding = false,
+    super.key,
+    required this.maincategName,
+    required this.subcategName,
+  });
 
   @override
   State<SubCategProducts> createState() => _SubCategProductsState();
@@ -30,7 +36,16 @@ class _SubCategProductsState extends State<SubCategProducts> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: const AppBarBackButton(),
+        leading: widget.fromOnBoarding == true
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/customer_home');
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                ))
+            : const AppBarBackButton(),
         title: AppbarTitle(title: widget.subcategName),
       ),
       body: StreamBuilder<QuerySnapshot>(

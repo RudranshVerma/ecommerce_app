@@ -66,7 +66,7 @@ class DashboardScreen extends StatelessWidget {
                           .whenComplete(() {
                         Navigator.pop(context);
                         Navigator.pushReplacementNamed(
-                            context, '/welcome_screen');
+                            context, '/welcomescreen');
                       });
                     });
               },
