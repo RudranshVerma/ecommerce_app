@@ -26,7 +26,7 @@ class CartModel extends StatelessWidget {
               SizedBox(
                 height: 100,
                 width: 120,
-                child: Image.network(product.imagesUrl.first),
+                child: Image.network(product.imagesUrl),
               ),
               Flexible(
                   child: Padding(

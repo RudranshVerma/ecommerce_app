@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/providers/id_provider.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,10 +44,11 @@ class PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String docId = context.read<IdProvider>().getData;
     double totalPrice = context.watch<Cart>().totalPrice;
     double totalPaid = context.watch<Cart>().totalPrice + 10.0;
     return FutureBuilder<DocumentSnapshot>(
-        future: customers.doc(FirebaseAuth.instance.currentUser!.uid).get(),
+        future: customers.doc(docId).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -278,7 +280,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                                                       'orderid': orderId,
                                                       'ordername': item.name,
                                                       'orderimage':
-                                                          item.imagesUrl.first,
+                                                          item.imagesUrl,
                                                       'orderqty': item.qty,
                                                       'orderprice':
                                                           item.qty * item.price,
@@ -430,7 +432,7 @@ class PaymentScreenState extends State<PaymentScreen> {
             'proid': item.documentId,
             'orderid': orderId,
             'ordername': item.name,
-            'orderimage': item.imagesUrl.first,
+            'orderimage': item.imagesUrl,
             'orderqty': item.qty,
             'orderprice': item.qty * item.price,
             'deliverystatus': 'preparing',

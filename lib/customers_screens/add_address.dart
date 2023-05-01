@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
+import 'package:ecommerce_app/providers/id_provider.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
 import '../widgtes/appbar_widgets.dart';
 
 class AddAddress extends StatefulWidget {
@@ -145,7 +145,7 @@ class _AddAddressState extends State<AddAddress> {
                               CollectionReference addressRef = FirebaseFirestore
                                   .instance
                                   .collection('customers')
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .doc(context.read<IdProvider>().getData)
                                   .collection('address');
                               var addressId = const Uuid().v4();
                               await addressRef.doc(addressId).set({

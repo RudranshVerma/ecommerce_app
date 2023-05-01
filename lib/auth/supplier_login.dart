@@ -5,7 +5,7 @@ import 'package:ecommerce_app/widgtes/auth_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgtes/snackbar.dart';
 
 class SupplierLogin extends StatefulWidget {
@@ -16,6 +16,7 @@ class SupplierLogin extends StatefulWidget {
 }
 
 class _SupplierLoginState extends State<SupplierLogin> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late String email;
   late String password;
   bool processing = false;
@@ -36,6 +37,11 @@ class _SupplierLoginState extends State<SupplierLogin> {
         await AuthRepo.reloadUserData();
         if (await AuthRepo.checkEmailVerification()) {
           _formKey.currentState!.reset();
+          User user = FirebaseAuth.instance.currentUser!;
+
+          final SharedPreferences pref = await _prefs;
+          pref.setString('supplierid', user.uid);
+          print(user.uid);
 
           await Future.delayed(const Duration(milliseconds: 100))
               .whenComplete(() {

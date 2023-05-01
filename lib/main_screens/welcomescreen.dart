@@ -41,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(
-                            context, '/customerwelcomescreen');
+                            context, '/customeronboardingscreen');
                       },
                       child: const Text('Customer',
                           style: TextStyle(
@@ -55,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(
-                          context, '/supplierwelcomescreen');
+                          context, '/supplieronboardingscreen');
                     },
                     child: const Text('Vendor',
                         style: TextStyle(

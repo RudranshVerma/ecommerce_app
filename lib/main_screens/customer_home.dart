@@ -4,10 +4,8 @@ import 'package:ecommerce_app/main_screens/home.dart';
 import 'package:ecommerce_app/main_screens/profile.dart';
 import 'package:ecommerce_app/main_screens/stores.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:badges/badges.dart' as badges;
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -28,6 +26,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         // documentId: FirebaseAuth.instance.currentUser!.uid,
         ),
   ];
+  void initState() {
+    context.read<Cart>().loadCartItemsProvider();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

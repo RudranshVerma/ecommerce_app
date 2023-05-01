@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/customers_screens/add_address.dart';
+import 'package:ecommerce_app/providers/id_provider.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -18,17 +20,19 @@ class AddressBook extends StatefulWidget {
 }
 
 class _AddressBookState extends State<AddressBook> {
-  final Stream<QuerySnapshot> addressStream = FirebaseFirestore.instance
-      .collection('customers')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('address')
-      .snapshots();
+  late String docId;
+
+  @override
+  void initState() {
+    docId = context.read<IdProvider>().getData;
+    super.initState();
+  }
 
   Future dfAddressFalse(dynamic item) async {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentReference documentReference = FirebaseFirestore.instance
           .collection('customers')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(docId)
           .collection('address')
           .doc(item.id);
       transaction.update(documentReference, {'default': false});
@@ -39,7 +43,7 @@ class _AddressBookState extends State<AddressBook> {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentReference documentReference = FirebaseFirestore.instance
           .collection('customers')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(docId)
           .collection('address')
           .doc(customer['addressid']);
       transaction.update(documentReference, {'default': true});
@@ -71,6 +75,11 @@ class _AddressBookState extends State<AddressBook> {
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> addressStream = FirebaseFirestore.instance
+        .collection('customers')
+        .doc(context.read<IdProvider>().getData)
+        .collection('address')
+        .snapshots();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

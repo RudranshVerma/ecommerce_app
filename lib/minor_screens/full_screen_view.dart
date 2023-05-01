@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +6,7 @@ class FullScreenView extends StatefulWidget {
   const FullScreenView({Key? key, required this.imagesList}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _FullScreenViewState createState() => _FullScreenViewState();
 }
 

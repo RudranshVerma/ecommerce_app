@@ -1,13 +1,15 @@
 // ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/minor_screens/forgot_password.dart';
+import 'package:ecommerce_app/providers/id_provider.dart';
 import 'package:ecommerce_app/widgtes/auth_widgets.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/auth_repo.dart';
 
@@ -19,6 +21,7 @@ class CustomerLogin extends StatefulWidget {
 }
 
 class _CustomerLoginState extends State<CustomerLogin> {
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
 
@@ -29,6 +32,10 @@ class _CustomerLoginState extends State<CustomerLogin> {
     } catch (e) {
       return false;
     }
+  }
+
+  setUserId(User user) {
+    context.read<IdProvider>().setCustomerId(user);
   }
 
   bool docExists = false;
@@ -52,6 +59,11 @@ class _CustomerLoginState extends State<CustomerLogin> {
       print(FirebaseAuth.instance.currentUser!.uid);
       print(googleUser);
       print(user);
+      setUserId(user);
+      context.read<IdProvider>().setCustomerId(user);
+      // final SharedPreferences pref = await _prefs;
+      // pref.setString('customerid', user.uid);
+      // print(user.uid);
 
       docExists = await checkIfDocExists(user.uid);
 
@@ -91,6 +103,12 @@ class _CustomerLoginState extends State<CustomerLogin> {
         await AuthRepo.reloadUserData();
         if (await AuthRepo.checkEmailVerification()) {
           _formKey.currentState!.reset();
+          User user = FirebaseAuth.instance.currentUser!;
+          setUserId(user);
+          // User user = FirebaseAuth.instance.currentUser!;
+          // final SharedPreferences pref = await _prefs;
+          // pref.setString('customerid', user.uid);
+          // print(user.uid);
 
           navigate();
         } else {

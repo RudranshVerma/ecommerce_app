@@ -16,7 +16,7 @@ class Wish extends ChangeNotifier {
     double price,
     int qty,
     int qntty,
-    List imagesUrl,
+    String imagesUrl,
     String documentId,
     String suppId,
   ) async {
