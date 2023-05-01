@@ -17,12 +17,12 @@ class SupplierHomeScreen extends StatefulWidget {
 
 class SupplierHomeScreenState extends State<SupplierHomeScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _tabs = const [
-    HomeScreen(),
-    CategoryScreen(),
-    StoresScreen(),
+  final List<Widget> _tabs = [
+    const HomeScreen(),
+    const CategoryScreen(),
+    const StoresScreen(),
     DashboardScreen(),
-    UploadProductScreen(),
+    const UploadProductScreen(),
   ];
   @override
   Widget build(BuildContext context) {

@@ -25,7 +25,7 @@ class WishlistModel extends StatelessWidget {
               SizedBox(
                 height: 100,
                 width: 120,
-                child: Image.network(product.imagesUrl.first),
+                child: Image.network(product.imagesUrl),
               ),
               Flexible(
                   child: Padding(
@@ -71,13 +71,15 @@ class WishlistModel extends StatelessWidget {
                               : IconButton(
                                   onPressed: () {
                                     context.read<Cart>().addItem(
-                                          product.name,
-                                          product.price,
-                                          1,
-                                          product.qntty,
-                                          product.imagesUrl,
-                                          product.documentId,
-                                          product.suppId,
+                                          Product(
+                                            documentId: product.documentId,
+                                            name: product.name,
+                                            price: product.price,
+                                            qty: 1,
+                                            qntty: product.qntty,
+                                            imagesUrl: product.imagesUrl,
+                                            suppId: product.suppId,
+                                          ),
                                         );
                                   },
                                   icon: const Icon(Icons.add_shopping_cart))

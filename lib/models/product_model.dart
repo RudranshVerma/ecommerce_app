@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
-
 import '../minor_screens/edit_product.dart';
 
 class ProductModel extends StatefulWidget {
@@ -68,7 +67,7 @@ class _ProductModelState extends State<ProductModel> {
                           Row(
                             children: [
                               const Text(
-                                '\$ ',
+                                '\₹',
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 16,
@@ -103,8 +102,7 @@ class _ProductModelState extends State<ProductModel> {
                                   : const Text(' ')
                             ],
                           ),
-                          widget.products['sid'] ==
-                                  FirebaseAuth.instance.currentUser!.uid
+                          FirebaseAuth.instance.currentUser != null
                               ? IconButton(
                                   onPressed: () {
                                     Navigator.push(

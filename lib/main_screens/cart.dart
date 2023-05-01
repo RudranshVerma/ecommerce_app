@@ -1,13 +1,16 @@
 // ignore_for_file: library_private_types_in_public_api
-
 import 'package:ecommerce_app/models/cart_model.dart';
+import 'package:ecommerce_app/providers/id_provider.dart';
+import 'package:ecommerce_app/providers/sql_helper.dart';
 
 import 'package:ecommerce_app/widgtes/alert_dialog.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../minor_screens/place_order.dart';
 import '../providers/cart_provider.dart';
 // import '../widgtes/yellow_button.dart';
@@ -22,6 +25,39 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  late String docId;
+  void logInDialog() {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('please log in'),
+        content: const Text('you should be logged in to take an action'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/customer_login');
+            },
+            child: const Text('Log in'),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    docId = context.read<IdProvider>().getData;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double total = context.watch<Cart>().totalPrice;
@@ -91,13 +127,17 @@ class _CartScreenState extends State<CartScreen> {
                 child: MaterialButton(
                   onPressed: total == 0.0
                       ? null
-                      : () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PlaceOrderScreen()));
-                        },
+                      : docId == ''
+                          ? () {
+                              logInDialog();
+                            }
+                          : () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PlaceOrderScreen()));
+                            },
                   child: const Text('CHECK OUT'),
                 ),
               ),

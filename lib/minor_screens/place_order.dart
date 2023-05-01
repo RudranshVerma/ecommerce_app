@@ -4,11 +4,11 @@ import 'package:ecommerce_app/customers_screens/address_book.dart';
 import 'package:ecommerce_app/minor_screens/payment_screen.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart_provider.dart';
+import '../providers/id_provider.dart';
 
 class PlaceOrderScreen extends StatefulWidget {
   const PlaceOrderScreen({super.key});
@@ -18,23 +18,29 @@ class PlaceOrderScreen extends StatefulWidget {
 }
 
 class PlaceOrderScreenState extends State<PlaceOrderScreen> {
+  late String docId;
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
-
-  final Stream<QuerySnapshot> addressStream = FirebaseFirestore.instance
-      .collection('customers')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('address')
-      .where('default', isEqualTo: true)
-      .limit(1)
-      .snapshots();
 
   late String name;
   late String phone;
   late String address;
 
   @override
+  void initState() {
+    docId = context.read<IdProvider>().getData;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> addressStream = FirebaseFirestore.instance
+        .collection('customers')
+        .doc(/*FirebaseAuth.instance.currentUser!.uid*/ docId)
+        .collection('address')
+        .where('default', isEqualTo: true)
+        .limit(1)
+        .snapshots();
     double totalPrice = context.watch<Cart>().totalPrice;
     return StreamBuilder<QuerySnapshot>(
         stream: addressStream,
@@ -51,20 +57,6 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
             );
           }
 
-          // if (snapshot.data!.docs.isEmpty) {
-          //   return const Center(
-          //       child: Text(
-          //     'This category \n\n has no items yet !',
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(
-          //         fontSize: 26,
-          //         color: Colors.blueGrey,
-          //         fontWeight: FontWeight.bold,
-          //         fontFamily: 'Acme',
-          //         letterSpacing: 1.5),
-          //   ));
-          // }
-          // return Text("Full Name: ${data['full_name']} ${data['last_name']}");
           return Material(
             color: Colors.grey.shade200,
             child: SafeArea(
@@ -201,8 +193,8 @@ class PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                           child: SizedBox(
                                             height: 100,
                                             width: 100,
-                                            child: Image.network(
-                                                order.imagesUrl.first),
+                                            child:
+                                                Image.network(order.imagesUrl),
                                           ),
                                         ),
                                         // forcing image for same dimensions

@@ -1,10 +1,10 @@
 import 'dart:core';
-
 import 'package:ecommerce_app/providers/product_class.dart';
+import 'package:ecommerce_app/providers/sql_helper.dart';
 import 'package:flutter/cupertino.dart';
 
 class Cart extends ChangeNotifier {
-  final List<Product> _list = [];
+  static List<Product> _list = [];
   List<Product> get getItems {
     return _list;
   }
@@ -22,44 +22,49 @@ class Cart extends ChangeNotifier {
     return _list.length;
   }
 
-  void addItem(
-    String name,
-    double price,
-    int qty,
-    int qntty,
-    List imagesUrl,
-    String documentId,
-    String suppId,
-  ) {
-    final product = Product(
-        name: name,
-        price: price,
-        qty: qty,
-        qntty: qntty,
-        imagesUrl: imagesUrl,
-        documentId: documentId,
-        suppId: suppId);
-    _list.add(product);
+  void addItem(Product product) async {
+    await SQLHelper.insertItem(product).whenComplete(() => _list.add(product));
     notifyListeners();
   }
 
-  void increment(Product product) {
-    product.increase();
+  loadCartItemsProvider() async {
+    List<Map> data = await SQLHelper.loadItems();
+    _list = data.map((product) {
+      return Product(
+          documentId: product['documentId'],
+          name: product['name'],
+          price: product['price'],
+          qty: product['qty'],
+          qntty: product['qntty'],
+          imagesUrl: product['imagesUrl'],
+          suppId: product['suppId']);
+    }).toList();
     notifyListeners();
   }
 
-  void reduceByOne(Product product) {
-    product.decrease();
+  void increment(
+    Product product,
+  ) async {
+    await SQLHelper.updateItem(product, 'increment')
+        .whenComplete(() => product.increase());
+
     notifyListeners();
   }
 
-  void removeItem(Product product) {
-    _list.remove(product);
+  void reduceByOne(Product product) async {
+    await SQLHelper.updateItem(product, 'reduce')
+        .whenComplete(() => product.decrease());
     notifyListeners();
   }
 
-  void clearCart() {
-    _list.clear();
+  void removeItem(Product product) async {
+    await SQLHelper.deleteItem(product.documentId)
+        .whenComplete(() => _list.remove(product));
+    notifyListeners();
+  }
+
+  void clearCart() async {
+    await SQLHelper.deleteAllItems().whenComplete(() => _list.clear());
     notifyListeners();
   }
 }

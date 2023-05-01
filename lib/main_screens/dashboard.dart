@@ -1,8 +1,6 @@
 import 'dart:core';
-
 import 'package:ecommerce_app/dashboard_components/edit_business.dart';
 import 'package:ecommerce_app/dashboard_components/manage_products.dart';
-
 import 'package:ecommerce_app/dashboard_components/supp_balance.dart';
 import 'package:ecommerce_app/dashboard_components/supp_statics.dart';
 import 'package:ecommerce_app/dashboard_components/supp_orders.dart';
@@ -12,6 +10,7 @@ import 'package:ecommerce_app/widgtes/alert_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<String> label = [
   'MY STORE',
@@ -39,7 +38,8 @@ List<Widget> pages = [
 ];
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  DashboardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +62,13 @@ class DashboardScreen extends StatelessWidget {
                     },
                     tabYes: () async {
                       await AuthRepo.logOut();
+                      final SharedPreferences pref = await _prefs;
+                      pref.setString('supplierid', '');
                       await Future.delayed(const Duration(microseconds: 100))
                           .whenComplete(() {
                         Navigator.pop(context);
                         Navigator.pushReplacementNamed(
-                            context, '/welcomescreen');
+                            context, '/supplieronboardingscreen');
                       });
                     });
               },

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/main_screens/cart.dart';
-import 'package:ecommerce_app/minor_screens/visit_store.dart';
 import 'package:ecommerce_app/minor_screens/full_screen_view.dart';
+import 'package:ecommerce_app/minor_screens/visit_store.dart';
 import 'package:ecommerce_app/models/product_model.dart';
+import 'package:ecommerce_app/providers/product_class.dart';
 import 'package:ecommerce_app/widgtes/appbar_widgets.dart';
 import 'package:ecommerce_app/widgtes/snackbar.dart';
 import 'package:ecommerce_app/widgtes/yellow_button.dart';
@@ -366,18 +367,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               _scaffoldKey, 'this item already in cart');
                         } else {
                           context.read<Cart>().addItem(
-                                widget.proList['proname'],
-                                onSale != 0
-                                    ? ((1 -
-                                            (widget.proList['discount'] /
-                                                100)) *
-                                        widget.proList['price'])
-                                    : widget.proList['price'],
-                                1,
-                                widget.proList['instock'],
-                                widget.proList['proimages'],
-                                widget.proList['proid'],
-                                widget.proList['sid'],
+                                Product(
+                                  documentId: widget.proList['proid'],
+                                  name: widget.proList['proname'],
+                                  price: onSale != 0
+                                      ? ((1 -
+                                              (widget.proList['discount'] /
+                                                  100)) *
+                                          widget.proList['price'])
+                                      : widget.proList['price'],
+                                  qty: 1,
+                                  qntty: widget.proList['instock'],
+                                  imagesUrl: imagesList.first,
+                                  suppId: widget.proList['sid'],
+                                ),
                               );
                         }
                       },
