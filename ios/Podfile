@@ -1,17 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '15.0'
-# source 'https://cdn.cocoapods.org/'
-# source 'https://github.com/CocoaPods/Specs.git'
-# source 'https://github.com/firebase/firebase-ios-sdk.git'
-
-# source 'https://cdn.cocoapods.org/'
-# source 'https://github.com/CocoaPods/Specs.git'
-# source 'https://github.com/firebase/firebase-ios-sdk.git'
-
-
-# pod 'Firebase/Storage'
-# pod 'FirebaseCoreInternal-library', :modular_headers => true
-# pod 'FirebaseStorage-library', :modular_headers => true
+platform :ios, '12.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -38,7 +26,6 @@ end
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
 flutter_ios_podfile_setup
-# use_modular_headers!
 
 target 'Runner' do
   use_frameworks!
@@ -48,8 +35,7 @@ target 'Runner' do
 end
 
 post_install do |installer|
-  installer.pods_project.targets.each do |target| 
+  installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
   end
 end
-
